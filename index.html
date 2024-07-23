@@ -30,7 +30,7 @@
 
     var path = d3.geoPath().projection(projection);
 
-    d3.json("https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/connecticut-counties.geojson").then(function(data) {
+    d3.json("ct-counties.geojson").then(function(data) {
       svg.selectAll("path")
          .data(data.features)
          .enter().append("path")
