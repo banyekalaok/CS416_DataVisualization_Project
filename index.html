@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Connecticut County Map and Ohio Population and Employment Bar Charts</title>
-  <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, and a bar chart of Ohio's employment from 2010 to 2022.">
+  <title>Connecticut County Map and Ohio Bar Charts</title>
+  <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022.">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
     path {
@@ -33,8 +33,8 @@
   </style>
 </head>
 <body>
-  <h1>Connecticut County Map and Ohio Population and Employment Bar Charts</h1>
-  <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, and a bar chart of Ohio's employment from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
+  <h1>Connecticut County Map and Ohio Bar Charts</h1>
+  <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
     <svg id="map" width="1200" height="800"></svg>
@@ -75,13 +75,14 @@
       console.log(error);
     });
 
-    // Ohio Population Bar Chart
+    // Ohio Population, Employment, and Per Capita Income Bar Charts
     var chartWidth = 1200;
     var chartHeight = 600;
     var margin = {top: 40, right: 20, bottom: 40, left: 40};
 
     var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
     var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
+    var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
     var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
     var chartSvg = d3.select("#chart")
@@ -151,7 +152,7 @@
           .attr("height", d => y(0) - y(d));
     }
 
-    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart
+    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart
 
     function updateVisualization() {
       if (state === 0) {
@@ -165,17 +166,21 @@
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(employmentData, "Employment", [2100000, 2400000]);
+      } else if (state === 3) {
+        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        updateChart(incomeData, "Per Capita Income", [60000, 85000]);
       }
     }
 
     // Button event listeners
     document.getElementById('prev-button').addEventListener('click', function() {
-      state = (state - 1 + 3) % 3;
+      state = (state - 1 + 4) % 4;
       updateVisualization();
     });
 
     document.getElementById('next-button').addEventListener('click', function() {
-      state = (state + 1) % 3;
+      state = (state + 1) % 4;
       updateVisualization();
     });
 
