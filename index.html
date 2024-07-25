@@ -37,22 +37,22 @@
   <p>This page displays an interactive map of Connecticut counties and a bar chart of Ohio's population from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
-    <svg id="map" width="1200" height="800"></svg>
+    <svg id="map" width="800" height="600"></svg>
   </div>
 
   <div id="chart-container" class="hidden">
-    <svg id="chart" width="1000" height="500"></svg>
+    <svg id="chart" width="800" height="600"></svg>
   </div>
 
   <div class="button-container">
-    <button id="map-button">Show Map</button>
-    <button id="chart-button">Show Bar Chart</button>
+    <button id="map-button">Prev</button>
+    <button id="chart-button">Next</button>
   </div>
 
   <script>
     // Connecticut County Map
-    var mapWidth = 1200;
-    var mapHeight = 800;
+    var mapWidth = 800;
+    var mapHeight = 600;
 
     var mapSvg = d3.select("#map")
                    .attr("width", mapWidth)
@@ -76,9 +76,9 @@
     });
 
     // Ohio Population Bar Chart
-    var chartWidth = 1000;
-    var chartHeight = 500;
-    var margin = {top: 20, right: 30, bottom: 40, left: 50};
+    var chartWidth = 800;
+    var chartHeight = 600;
+    var margin = {top: 20, right: 20, bottom: 20, left: 20};
 
     var data = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 362620];
     var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
