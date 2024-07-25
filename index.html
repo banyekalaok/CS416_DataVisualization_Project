@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Connecticut County Map and Ohio Population Bar Chart</title>
-  <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties and a bar chart of Ohio's population from 2010 to 2022.">
+  <title>Connecticut County Map and Ohio Population and Employment Bar Charts</title>
+  <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, and a bar chart of Ohio's employment from 2010 to 2022.">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
     path {
@@ -33,8 +33,8 @@
   </style>
 </head>
 <body>
-  <h1>Connecticut County Map and Ohio Population Bar Chart</h1>
-  <p>This page displays an interactive map of Connecticut counties and a bar chart of Ohio's population from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
+  <h1>Connecticut County Map and Ohio Population and Employment Bar Charts</h1>
+  <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, and a bar chart of Ohio's employment from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
     <svg id="map" width="1200" height="800"></svg>
@@ -45,8 +45,8 @@
   </div>
 
   <div class="button-container">
-    <button id="map-button">Prev</button>
-    <button id="chart-button">Next</button>
+    <button id="prev-button">Prev</button>
+    <button id="next-button">Next</button>
   </div>
 
   <script>
@@ -94,16 +94,23 @@
               .padding(0.1);
 
     var y = d3.scaleLinear()
-              .domain([3500000, 3700000]) // Set y-axis range
+              .domain([3500000, 3700000]) // Initial y-axis range for population
               .nice()
               .range([chartHeight - margin.bottom, margin.top]);
 
     var yAxisLabel = "Population";
 
-    var xAxis = chartSvg.append("g")
+    chartSvg.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-            .call(d3.axisBottom(x).tickSizeOuter(0));
+            .call(d3.axisBottom(x).tickSizeOuter(0))
+            .append("text")
+            .attr("class", "axis-label")
+            .attr("x", chartWidth / 2)
+            .attr("y", margin.bottom - 10)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .text("Year");
 
     var yAxis = chartSvg.append("g")
                         .attr("class", "y-axis")
@@ -128,52 +135,52 @@
                        .attr("height", d => y(0) - y(d));
 
     function updateChart(newData, newLabel, newYDomain) {
-      // Clear the contents of the chart container
-      chartSvg.html("");
-
-      // Update scales and axis
       y.domain(newYDomain).nice();
 
-      chartSvg.append("g")
-            .attr("class", "x-axis")
-            .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-            .call(d3.axisBottom(x).tickSizeOuter(0));
+      yAxis.transition()
+           .duration(1000)
+           .call(d3.axisLeft(y));
 
-      var newYAxis = chartSvg.append("g")
-                        .attr("class", "y-axis")
-                        .attr("transform", `translate(${margin.left},0)`)
-                        .call(d3.axisLeft(y));
-
-      newYAxis.append("text")
-           .attr("class", "axis-label")
-           .attr("x", -margin.left)
-           .attr("y", margin.top - 10)
-           .attr("fill", "black")
-           .attr("text-anchor", "start")
+      yAxis.select(".axis-label")
            .text(newLabel);
 
-      // Update bars
-      chartSvg.selectAll(".bar")
-              .data(newData)
-              .enter().append("rect")
-              .attr("class", "bar")
-              .attr("x", (d, i) => x(years[i]))
-              .attr("y", d => y(d))
-              .attr("width", x.bandwidth())
-              .attr("height", d => y(0) - y(d));
+      bars.data(newData)
+          .transition()
+          .duration(1000)
+          .attr("y", d => y(d))
+          .attr("height", d => y(0) - y(d));
+    }
+
+    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart
+
+    function updateVisualization() {
+      if (state === 0) {
+        document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('chart-container').classList.add('hidden');
+      } else if (state === 1) {
+        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        updateChart(populationData, "Population", [3500000, 3700000]);
+      } else if (state === 2) {
+        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        updateChart(employmentData, "Employment", [2100000, 2400000]);
+      }
     }
 
     // Button event listeners
-    document.getElementById('map-button').addEventListener('click', function() {
-      document.getElementById('map-container').classList.remove('hidden');
-      document.getElementById('chart-container').classList.add('hidden');
+    document.getElementById('prev-button').addEventListener('click', function() {
+      state = (state - 1 + 3) % 3;
+      updateVisualization();
     });
 
-    document.getElementById('chart-button').addEventListener('click', function() {
-      document.getElementById('map-container').classList.add('hidden');
-      document.getElementById('chart-container').classList.remove('hidden');
-      updateChart(employmentData, "Employment", [2100000, 2400000]);
+    document.getElementById('next-button').addEventListener('click', function() {
+      state = (state + 1) % 3;
+      updateVisualization();
     });
+
+    // Initialize the visualization
+    updateVisualization();
   </script>
 </body>
 </html>
