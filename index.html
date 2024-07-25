@@ -80,7 +80,8 @@
     var chartHeight = 600;
     var margin = {top: 40, right: 20, bottom: 40, left: 40};
 
-    var data = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+    var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+    var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
     var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
     var chartSvg = d3.select("#chart")
@@ -97,6 +98,8 @@
               .nice()
               .range([chartHeight - margin.bottom, margin.top]);
 
+    var yAxisLabel = "Population";
+
     chartSvg.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
@@ -109,26 +112,44 @@
             .attr("text-anchor", "middle")
             .text("Year");
 
-    chartSvg.append("g")
-            .attr("class", "y-axis")
-            .attr("transform", `translate(${margin.left},0)`)
-            .call(d3.axisLeft(y))
-            .append("text")
-            .attr("class", "axis-label")
-            .attr("x", -margin.left)
-            .attr("y", margin.top - 10)
-            .attr("fill", "black")
-            .attr("text-anchor", "start")
-            .text("Population");
+    var yAxis = chartSvg.append("g")
+                        .attr("class", "y-axis")
+                        .attr("transform", `translate(${margin.left},0)`)
+                        .call(d3.axisLeft(y));
 
-    chartSvg.selectAll(".bar")
-            .data(data)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", (d, i) => x(years[i]))
-            .attr("y", d => y(d))
-            .attr("width", x.bandwidth())
-            .attr("height", d => y(0) - y(d));
+    yAxis.append("text")
+         .attr("class", "axis-label")
+         .attr("x", -margin.left)
+         .attr("y", margin.top - 10)
+         .attr("fill", "black")
+         .attr("text-anchor", "start")
+         .text(yAxisLabel);
+
+    var bars = chartSvg.selectAll(".bar")
+                       .data(populationData)
+                       .enter().append("rect")
+                       .attr("class", "bar")
+                       .attr("x", (d, i) => x(years[i]))
+                       .attr("y", d => y(d))
+                       .attr("width", x.bandwidth())
+                       .attr("height", d => y(0) - y(d));
+
+    function updateChart(newData, newLabel, newYDomain) {
+      y.domain(newYDomain).nice();
+
+      yAxis.transition()
+           .duration(1000)
+           .call(d3.axisLeft(y));
+
+      yAxis.select(".axis-label")
+           .text(newLabel);
+
+      bars.data(newData)
+          .transition()
+          .duration(1000)
+          .attr("y", d => y(d))
+          .attr("height", d => y(0) - y(d));
+    }
 
     // Button event listeners
     document.getElementById('map-button').addEventListener('click', function() {
@@ -139,6 +160,7 @@
     document.getElementById('chart-button').addEventListener('click', function() {
       document.getElementById('map-container').classList.add('hidden');
       document.getElementById('chart-container').classList.remove('hidden');
+      updateChart(employmentData, "Employment", [2100000, 2400000]);
     });
   </script>
 </body>
