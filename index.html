@@ -30,14 +30,9 @@
     .hidden {
       display: none;
     }
-    .tooltip {
-      position: absolute;
-      background-color: white;
-      border: 1px solid black;
-      padding: 10px;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.2s;
+    .dropdown-container {
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -53,13 +48,15 @@
     <svg id="chart" width="800" height="400"></svg>
   </div>
 
+  <div class="dropdown-container hidden">
+    <select id="county-dropdown">
+      <option value="">Select a county</option>
+    </select>
+  </div>
+
   <div class="button-container">
     <button id="prev-button">Prev</button>
     <button id="next-button">Next</button>
-  </div>
-
-  <div class="tooltip" id="tooltip">
-    <svg id="tooltip-chart" width="400" height="200"></svg>
   </div>
 
   <script>
@@ -78,78 +75,28 @@
 
     var path = d3.geoPath().projection(projection);
 
-    var tooltip = d3.select("#tooltip");
-    var tooltipChart = d3.select("#tooltip-chart");
-    var tooltipWidth = 400;
-    var tooltipHeight = 200;
-    var tooltipMargin = {top: 20, right: 20, bottom: 20, left: 50};
-
-    var sampleData = [20, 30, 40, 50, 60, 70];
-    var sampleYears = [2015, 2016, 2017, 2018, 2019, 2020];
-
-    var xTooltip = d3.scaleBand()
-                     .domain(sampleYears)
-                     .range([tooltipMargin.left, tooltipWidth - tooltipMargin.right])
-                     .padding(0.1);
-
-    var yTooltip = d3.scaleLinear()
-                     .domain([0, d3.max(sampleData)])
-                     .nice()
-                     .range([tooltipHeight - tooltipMargin.bottom, tooltipMargin.top]);
-
-    tooltipChart.append("g")
-                .attr("class", "x-axis-tooltip")
-                .attr("transform", `translate(0,${tooltipHeight - tooltipMargin.bottom})`)
-                .call(d3.axisBottom(xTooltip).tickSizeOuter(0))
-                .append("text")
-                .attr("class", "axis-label")
-                .attr("x", tooltipWidth / 2)
-                .attr("y", tooltipMargin.bottom - 10)
-                .attr("fill", "black")
-                .attr("text-anchor", "middle")
-                .text("Year");
-
-    var yAxisTooltip = tooltipChart.append("g")
-                                   .attr("class", "y-axis-tooltip")
-                                   .attr("transform", `translate(${tooltipMargin.left},0)`)
-                                   .call(d3.axisLeft(yTooltip));
-
-    yAxisTooltip.append("text")
-                .attr("class", "axis-label")
-                .attr("x", -tooltipMargin.left)
-                .attr("y", tooltipMargin.top - 10)
-                .attr("fill", "black")
-                .attr("text-anchor", "start")
-                .text("Value");
-
-    var barsTooltip = tooltipChart.selectAll(".bar-tooltip")
-                                  .data(sampleData)
-                                  .enter().append("rect")
-                                  .attr("class", "bar-tooltip")
-                                  .attr("x", (d, i) => xTooltip(sampleYears[i]))
-                                  .attr("y", d => yTooltip(d))
-                                  .attr("width", xTooltip.bandwidth())
-                                  .attr("height", d => yTooltip(0) - yTooltip(d));
-
     d3.json("ct-counties.geojson").then(function(data) {
       mapSvg.selectAll("path")
             .data(data.features)
             .enter().append("path")
             .attr("d", path)
-            .attr("class", "county")
-            .on("click", function(event, d) {
-              // Show tooltip and update chart with data for the clicked county
-              tooltip.style("left", (event.pageX + 10) + "px")
-                     .style("top", (event.pageY - 20) + "px")
-                     .style("opacity", 1);
+            .attr("class", "county");
 
-              // Example: Update the tooltip chart with new data for the selected county
-              barsTooltip.data(sampleData)
-                         .transition()
-                         .duration(500)
-                         .attr("y", d => yTooltip(d))
-                         .attr("height", d => yTooltip(0) - yTooltip(d));
-            });
+      // Populate the dropdown menu
+      var dropdown = d3.select("#county-dropdown");
+      data.features.forEach(function(d) {
+        dropdown.append("option")
+                .attr("value", d.properties.name)
+                .text(d.properties.name);
+      });
+
+      // Event listener for dropdown menu
+      dropdown.on("change", function() {
+        var selectedCounty = d3.select(this).property("value");
+        if (selectedCounty) {
+          updateCountyChart(selectedCounty);
+        }
+      });
     }).catch(function(error) {
       console.log(error);
     });
@@ -174,7 +121,7 @@
               .padding(0.1);
 
     var y = d3.scaleLinear()
-              .domain([3500000, 3700000]) // Adjusted y-axis range
+              .domain([0, 3700000]) // Adjusted y-axis range
               .nice()
               .range([chartHeight - margin.bottom, margin.top]);
 
@@ -231,48 +178,66 @@
           .attr("height", d => y(0) - y(d));
     }
 
+    function updateCountyChart(countyName) {
+      // Dummy data for counties, replace with actual data
+      var countyData = {
+        "Fairfield": [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+        "Hartford": [250000, 255000, 260000, 265000, 270000, 275000, 280000, 285000, 290000, 295000, 300000, 305000, 310000],
+        "Litchfield": [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+        "Middlesex": [150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000],
+        "New Haven": [350000, 355000, 360000, 365000, 370000, 375000, 380000, 385000, 390000, 395000, 400000, 405000, 410000],
+        "New London": [175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000],
+        "Tolland": [125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000],
+        "Windham": [100000, 105000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000]
+      };
+
+      var selectedData = countyData[countyName];
+
+      updateChart(selectedData, countyName + " Population", [100000, 400000]);
+    }
+
     var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart
 
     function updateVisualization() {
       if (state === 0) {
         document.getElementById('map-container').classList.remove('hidden');
         document.getElementById('chart-container').classList.add('hidden');
-        tooltip.style("opacity", 0); // Hide tooltip when switching back to map
+        document.querySelector('.dropdown-container').classList.add('hidden');
       } else if (state === 1) {
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
         updateChart(populationData, "Population", [3500000, 3700000]);
       } else if (state === 2) {
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
         updateChart(employmentData, "Employment", [2100000, 2400000]);
       } else if (state === 3) {
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
         updateChart(incomeData, "Per Capita Income", [60000, 85000]);
+      } else if (state === 4) {
+        document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.remove('hidden');
       }
     }
 
     // Button event listeners
     document.getElementById('prev-button').addEventListener('click', function() {
-      state = (state - 1 + 4) % 4;
+      state = (state - 1 + 5) % 5;
       updateVisualization();
     });
 
     document.getElementById('next-button').addEventListener('click', function() {
-      state = (state + 1) % 4;
+      state = (state + 1) % 5;
       updateVisualization();
     });
 
     // Initialize the visualization
     updateVisualization();
-
-    // Hide tooltip when clicking outside the map
-    d3.select("body").on("click", function() {
-      if (event.target.tagName !== "path") {
-        tooltip.style("opacity", 0);
-      }
-    });
   </script>
 </body>
 </html>
