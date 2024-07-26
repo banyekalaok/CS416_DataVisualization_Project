@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,14 +35,11 @@
       text-align: center;
       margin-top: 20px;
     }
-    .chart-container {
-      margin-bottom: 20px;
-    }
   </style>
 </head>
 <body>
   <h1>Connecticut County Map and Connecticut Bar Charts</h1>
-  <p>This page displays an interactive map of Connecticut counties, and bar charts of Connecticut's population, employment, and per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
+  <p>This page displays an interactive map of Connecticut counties, a bar chart of Connecticut's population from 2010 to 2022, a bar chart of Connecticut's employment from 2010 to 2022, and a bar chart of Connecticut's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
     <svg id="map" width="800" height="600"></svg>
@@ -50,27 +48,19 @@
   <div class="dropdown-container hidden">
     <select id="county-dropdown">
       <option value="">Select a county</option>
-      <option value="Fairfield, CT">Fairfield</option>
-      <option value="Hartford, CT">Hartford</option>
-      <option value="Litchfield, CT">Litchfield</option>
-      <option value="Middlesex, CT">Middlesex</option>
-      <option value="New Haven, CT">New Haven</option>
-      <option value="New London, CT">New London</option>
-      <option value="Tolland, CT">Tolland</option>
-      <option value="Windham, CT">Windham</option>
+      <option value="Fairfield">Fairfield</option>
+      <option value="Hartford">Hartford</option>
+      <option value="Litchfield">Litchfield</option>
+      <option value="Middlesex">Middlesex</option>
+      <option value="New Haven">New Haven</option>
+      <option value="New London">New London</option>
+      <option value="Tolland">Tolland</option>
+      <option value="Windham">Windham</option>
     </select>
   </div>
 
   <div id="chart-container" class="hidden">
-    <div class="chart-container" id="population-chart">
-      <svg id="population-svg" width="800" height="400"></svg>
-    </div>
-    <div class="chart-container" id="income-chart">
-      <svg id="income-svg" width="800" height="400"></svg>
-    </div>
-    <div class="chart-container" id="employment-chart">
-      <svg id="employment-svg" width="800" height="400"></svg>
-    </div>
+    <svg id="chart" width="800" height="400"></svg>
   </div>
 
   <div class="button-container">
@@ -79,158 +69,184 @@
   </div>
 
   <script>
-    // Constants for SVG dimensions
-    const chartWidth = 800;
-    const chartHeight = 400;
-    const margin = {top: 30, right: 20, bottom: 50, left: 50};
-    const years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-    
-    // Dummy data for Connecticut
-    const populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
-    const employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
-    const incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
-    
-    // SVG containers
-    const populationSvg = d3.select("#population-svg");
-    const incomeSvg = d3.select("#income-svg");
-    const employmentSvg = d3.select("#employment-svg");
+    // Connecticut County Map
+    var mapWidth = 800;
+    var mapHeight = 600;
 
-    // Setup scales and axes
-    function setupChart(svg, data, label, yDomain) {
-      const x = d3.scaleBand()
-        .domain(years)
-        .range([margin.left, chartWidth - margin.right])
-        .padding(0.1);
+    var mapSvg = d3.select("#map")
+                   .attr("width", mapWidth)
+                   .attr("height", mapHeight);
 
-      const y = d3.scaleLinear()
-        .domain(yDomain)
-        .nice()
-        .range([chartHeight - margin.bottom, margin.top]);
+    var projection = d3.geoMercator()
+                       .center([-72.6940, 41.6032]) // Center the map on Connecticut
+                       .scale(8000) // Scale the map to fit within the SVG
+                       .translate([mapWidth / 2, mapHeight / 2]);
 
-      svg.selectAll("*").remove();
+    var path = d3.geoPath().projection(projection);
 
-      svg.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0))
-        .append("text")
-        .attr("class", "axis-label")
-        .attr("x", chartWidth / 2)
-        .attr("y", margin.bottom - 10)
-        .attr("fill", "black")
-        .attr("text-anchor", "middle")
-        .text("Year");
+    d3.json("ct-counties.geojson").then(function(data) {
+      mapSvg.selectAll("path")
+            .data(data.features)
+            .enter().append("path")
+            .attr("d", path)
+            .attr("class", "county");
 
-      const yAxis = svg.append("g")
-        .attr("class", "y-axis")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
+      // Populate the dropdown menu
+      var dropdown = d3.select("#county-dropdown");
+      data.features.forEach(function(d) {
+        dropdown.append("option")
+                .attr("value", d.properties.name)
+                .text(d.properties.name);
+      });
 
-      yAxis.append("text")
-        .attr("class", "axis-label")
-        .attr("x", -margin.left)
-        .attr("y", margin.top - 10)
-        .attr("fill", "black")
-        .attr("text-anchor", "start")
-        .text(label);
+      // Event listener for dropdown menu
+      dropdown.on("change", function() {
+        var selectedCounty = d3.select(this).property("value");
+        if (selectedCounty) {
+          updateCountyChart(selectedCounty);
+        }
+      });
+    }).catch(function(error) {
+      console.log(error);
+    });
 
-      svg.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", (d, i) => x(years[i]))
-        .attr("y", d => y(d))
-        .attr("width", x.bandwidth())
-        .attr("height", d => y(0) - y(d));
+    // Connecticut Population, Employment, and Per Capita Income Bar Charts
+    var chartWidth = 800;
+    var chartHeight = 400;
+    var margin = {top: 30, right: 20, bottom: 50, left: 50};
+
+    var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+    var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
+    var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
+    var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+
+    var chartSvg = d3.select("#chart")
+                     .attr("width", chartWidth)
+                     .attr("height", chartHeight);
+
+    var x = d3.scaleBand()
+              .domain(years)
+              .range([margin.left, chartWidth - margin.right])
+              .padding(0.1);
+
+    var y = d3.scaleLinear()
+              .domain([0, 3700000]) // Adjusted y-axis range
+              .nice()
+              .range([chartHeight - margin.bottom, margin.top]);
+
+    var yAxisLabel = "Population";
+
+    chartSvg.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", translate(0,${chartHeight - margin.bottom}))
+            .call(d3.axisBottom(x).tickSizeOuter(0))
+            .append("text")
+            .attr("class", "axis-label")
+            .attr("x", chartWidth / 2)
+            .attr("y", margin.bottom - 10)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .text("Year");
+
+    var yAxis = chartSvg.append("g")
+                        .attr("class", "y-axis")
+                        .attr("transform", translate(${margin.left},0))
+                        .call(d3.axisLeft(y));
+
+    yAxis.append("text")
+         .attr("class", "axis-label")
+         .attr("x", -margin.left)
+         .attr("y", margin.top - 10)
+         .attr("fill", "black")
+         .attr("text-anchor", "start")
+         .text(yAxisLabel);
+
+    var bars = chartSvg.selectAll(".bar")
+                       .data(populationData)
+                       .enter().append("rect")
+                       .attr("class", "bar")
+                       .attr("x", (d, i) => x(years[i]))
+                       .attr("y", d => y(d))
+                       .attr("width", x.bandwidth())
+                       .attr("height", d => y(0) - y(d));
+
+    function updateChart(newData, newLabel, newYDomain) {
+      y.domain(newYDomain).nice();
+
+      yAxis.transition()
+           .duration(1000)
+           .call(d3.axisLeft(y));
+
+      yAxis.select(".axis-label")
+           .text(newLabel);
+
+      bars.data(newData)
+          .transition()
+          .duration(1000)
+          .attr("y", d => y(d))
+          .attr("height", d => y(0) - y(d));
     }
 
-    // Update charts for selected county
-    function updateCountyCharts(countyName) {
-      const countyData = {
-        "Fairfield, CT": {
-          population: [919702, 929775, 938339, 944612, 950338, 952518, 953669, 954050, 956852, 957097, 955261, 963050, 962946],
-          income: [102572, 102997, 101729, 95083, 99718, 101239, 103708, 106972, 112898, 113634, 115859, 119982, 125185],
-          employment: [605634, 621729, 628393, 639197, 646565, 657037, 663787, 658198, 663335, 653822, 633880, 660242, 697773]
-        },
-        "Hartford, CT": {
-          population: [895440, 898033, 899840, 900791, 901481, 901332, 899949, 899713, 900246, 899727, 896666, 898265, 898783],
-          income: [50432, 52406, 53574, 53855, 55768, 57678, 58536, 59688, 61867, 63511, 66436, 69487, 70339],
-          employment: [620140, 629924, 633093, 638818, 646397, 652539, 653785, 656110, 660969, 659664, 633784, 647256, 668935]
-        },
-        // Add data for other counties here - dummy
-         "Litchfield, CT": {
-          population: [919702, 929775, 938339, 944612, 950338, 952518, 953669, 954050, 956852, 957097, 955261, 963050, 962946],
-          income: [102572, 102997, 101729, 95083, 99718, 101239, 103708, 106972, 112898, 113634, 115859, 119982, 125185],
-          employment: [605634, 621729, 628393, 639197, 646565, 657037, 663787, 658198, 663335, 653822, 633880, 660242, 697773]
-        },
-        "Middlesex, CT": {
-          population: [895440, 898033, 899840, 900791, 901481, 901332, 899949, 899713, 900246, 899727, 896666, 898265, 898783],
-          income: [50432, 52406, 53574, 53855, 55768, 57678, 58536, 59688, 61867, 63511, 66436, 69487, 70339],
-          employment: [620140, 629924, 633093, 638818, 646397, 652539, 653785, 656110, 660969, 659664, 633784, 647256, 668935]
-        },
-         "New Haven, CT": {
-          population: [919702, 929775, 938339, 944612, 950338, 952518, 953669, 954050, 956852, 957097, 955261, 963050, 962946],
-          income: [102572, 102997, 101729, 95083, 99718, 101239, 103708, 106972, 112898, 113634, 115859, 119982, 125185],
-          employment: [605634, 621729, 628393, 639197, 646565, 657037, 663787, 658198, 663335, 653822, 633880, 660242, 697773]
-        },
-        "New London, CT": {
-          population: [895440, 898033, 899840, 900791, 901481, 901332, 899949, 899713, 900246, 899727, 896666, 898265, 898783],
-          income: [50432, 52406, 53574, 53855, 55768, 57678, 58536, 59688, 61867, 63511, 66436, 69487, 70339],
-          employment: [620140, 629924, 633093, 638818, 646397, 652539, 653785, 656110, 660969, 659664, 633784, 647256, 668935]
-        },
-         "Tolland, CT": {
-          population: [919702, 929775, 938339, 944612, 950338, 952518, 953669, 954050, 956852, 957097, 955261, 963050, 962946],
-          income: [102572, 102997, 101729, 95083, 99718, 101239, 103708, 106972, 112898, 113634, 115859, 119982, 125185],
-          employment: [605634, 621729, 628393, 639197, 646565, 657037, 663787, 658198, 663335, 653822, 633880, 660242, 697773]
-        },
-        "Windham, CT": {
-          population: [895440, 898033, 899840, 900791, 901481, 901332, 899949, 899713, 900246, 899727, 896666, 898265, 898783],
-          income: [50432, 52406, 53574, 53855, 55768, 57678, 58536, 59688, 61867, 63511, 66436, 69487, 70339],
-          employment: [620140, 629924, 633093, 638818, 646397, 652539, 653785, 656110, 660969, 659664, 633784, 647256, 668935]
-        }
+    function updateCountyChart(countyName) {
+      // Dummy data for counties, replace with actual data
+      var countyData = {
+        "Fairfield": [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+        "Hartford": [250000, 255000, 260000, 265000, 270000, 275000, 280000, 285000, 290000, 295000, 300000, 305000, 310000],
+        "Litchfield": [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+        "Middlesex": [150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000],
+        "New Haven": [350000, 355000, 360000, 365000, 370000, 375000, 380000, 385000, 390000, 395000, 400000, 405000, 410000],
+        "New London": [175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000],
+        "Tolland": [125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000],
+        "Windham": [100000, 105000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000]
       };
 
-      const selectedData = countyData[countyName];
-      if (selectedData) {
-        setupChart(populationSvg, selectedData.population, countyName + " Population", [0, d3.max(selectedData.population)]);
-        setupChart(incomeSvg, selectedData.income, countyName + " Per Capita Income", [0, d3.max(selectedData.income)]);
-        setupChart(employmentSvg, selectedData.employment, countyName + " Employment", [0, d3.max(selectedData.employment)]);
+      var selectedData = countyData[countyName];
+
+      updateChart(selectedData, countyName + " Population", [100000, 400000]);
+    }
+
+    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for county chart
+
+    function updateVisualization() {
+      if (state === 0) {
+        document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('chart-container').classList.add('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
+      } else if (state === 1) {
+        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
+        updateChart(populationData, "Population", [3500000, 3700000]);
+      } else if (state === 2) {
+        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
+        updateChart(employmentData, "Employment", [2100000, 2400000]);
+      } else if (state === 3) {
+        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
+        updateChart(incomeData, "Per Capita Income", [60000, 85000]);
+      } else if (state === 4) {
+        document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('chart-container').classList.remove('hidden');
+        document.querySelector('.dropdown-container').classList.remove('hidden');
       }
     }
 
-    // Initial chart setup for example
-    updateCountyCharts("Fairfield, CT");
-
-    // Event listener for dropdown change
-    d3.select("#county-dropdown").on("change", function() {
-      const selectedCounty = d3.select(this).property("value");
-      if (selectedCounty) {
-        d3.select("#chart-container").classed("hidden", false);
-        updateCountyCharts(selectedCounty);
-      } else {
-        d3.select("#chart-container").classed("hidden", true);
-      }
+    // Button event listeners
+    document.getElementById('prev-button').addEventListener('click', function() {
+      state = (state - 1 + 5) % 5;
+      updateVisualization();
     });
 
-    // Next and Previous button functionality
-    let currentIndex = 0;
-    const counties = ["Fairfield, CT", "Hartford, CT", "Litchfield, CT", "Middlesex, CT", "New Haven, CT", "New London, CT", "Tolland, CT", "Windham, CT"];
-
-    function updateCharts() {
-      const county = counties[currentIndex];
-      updateCountyCharts(county);
-      d3.select("#county-dropdown").property("value", county);
-    }
-
-    d3.select("#next-button").on("click", function() {
-      currentIndex = (currentIndex + 1) % counties.length;
-      updateCharts();
+    document.getElementById('next-button').addEventListener('click', function() {
+      state = (state + 1) % 5;
+      updateVisualization();
     });
 
-    d3.select("#prev-button").on("click", function() {
-      currentIndex = (currentIndex - 1 + counties.length) % counties.length;
-      updateCharts();
-    });
+    // Initialize the visualization
+    updateVisualization();
   </script>
 </body>
 </html>
