@@ -41,6 +41,15 @@
       text-align: center;
       margin-top: 20px;
     }
+    .chart {
+      display: inline-block;
+      width: 250px;
+      height: 400px;
+    }
+    .chart-container {
+      display: flex;
+      justify-content: space-around;
+    }
   </style>
 </head>
 <body>
@@ -59,7 +68,11 @@
   </div>
 
   <div id="chart-container" class="hidden">
-    <svg id="chart" width="800" height="400"></svg>
+    <div class="chart-container">
+      <svg id="population-chart" class="chart" width="250" height="400"></svg>
+      <svg id="employment-chart" class="chart" width="250" height="400"></svg>
+      <svg id="income-chart" class="chart" width="250" height="400"></svg>
+    </div>
   </div>
 
   <div class="button-container">
@@ -91,90 +104,75 @@
     dropdown.on("change", function() {
       var selectedCounty = this.value;
       if (selectedCounty) {
-        updateCountyChart(selectedCounty);
+        updateCountyCharts(selectedCounty);
       }
     });
 
-    function updateCountyChart(countyName) {
+    function updateCountyCharts(countyName) {
       var selectedData = countyData[countyName];
-      updateChart(selectedData, countyName + " Population", [100000, 400000]);
+      
+      updateChart("#population-chart", selectedData, "Population", [100000, 400000]);
+      updateChart("#employment-chart", selectedData, "Employment", [100000, 400000]); // Example range
+      updateChart("#income-chart", selectedData, "Per Capita Income", [10000, 50000]); // Example range
     }
 
-    // Connecticut Population, Employment, and Per Capita Income Bar Charts
-    var chartWidth = 800;
-    var chartHeight = 400;
-    var margin = {top: 30, right: 20, bottom: 50, left: 50};
+    // General function to update any chart
+    function updateChart(selector, data, label, yDomain) {
+      var chartWidth = 250;
+      var chartHeight = 400;
+      var margin = {top: 30, right: 20, bottom: 50, left: 50};
 
-    var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
-    var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
-    var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
-    var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+      var svg = d3.select(selector)
+                  .attr("width", chartWidth)
+                  .attr("height", chartHeight);
 
-    var chartSvg = d3.select("#chart")
-                     .attr("width", chartWidth)
-                     .attr("height", chartHeight);
+      var x = d3.scaleBand()
+                .domain(years)
+                .range([margin.left, chartWidth - margin.right])
+                .padding(0.1);
 
-    var x = d3.scaleBand()
-              .domain(years)
-              .range([margin.left, chartWidth - margin.right])
-              .padding(0.1);
+      var y = d3.scaleLinear()
+                .domain(yDomain) 
+                .nice()
+                .range([chartHeight - margin.bottom, margin.top]);
 
-    var y = d3.scaleLinear()
-              .domain([0, 3700000]) // Adjusted y-axis range
-              .nice()
-              .range([chartHeight - margin.bottom, margin.top]);
+      svg.selectAll(".x-axis").remove();
+      svg.selectAll(".y-axis").remove();
+      svg.selectAll(".bar").remove();
 
-    var yAxisLabel = "Population";
-
-    chartSvg.append("g")
-            .attr("class", "x-axis")
-            .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-            .call(d3.axisBottom(x).tickSizeOuter(0))
-            .append("text")
-            .attr("class", "axis-label")
-            .attr("x", chartWidth / 2)
-            .attr("y", margin.bottom - 10)
-            .attr("fill", "black")
-            .attr("text-anchor", "middle")
-            .text("Year");
-
-    var yAxis = chartSvg.append("g")
-                        .attr("class", "y-axis")
-                        .attr("transform", `translate(${margin.left},0)`)
-                        .call(d3.axisLeft(y));
-
-    yAxis.append("text")
+      svg.append("g")
+         .attr("class", "x-axis")
+         .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
+         .call(d3.axisBottom(x).tickSizeOuter(0))
+         .append("text")
          .attr("class", "axis-label")
-         .attr("x", -margin.left)
-         .attr("y", margin.top - 10)
+         .attr("x", chartWidth / 2)
+         .attr("y", margin.bottom - 10)
          .attr("fill", "black")
-         .attr("text-anchor", "start")
-         .text(yAxisLabel);
+         .attr("text-anchor", "middle")
+         .text("Year");
 
-    var bars = chartSvg.selectAll(".bar")
-                       .data(populationData)
-                       .enter().append("rect")
-                       .attr("class", "bar")
-                       .attr("x", (d, i) => x(years[i]))
-                       .attr("y", d => y(d))
-                       .attr("width", x.bandwidth())
-                       .attr("height", d => y(0) - y(d));
+      var yAxis = svg.append("g")
+                     .attr("class", "y-axis")
+                     .attr("transform", `translate(${margin.left},0)`)
+                     .call(d3.axisLeft(y));
 
-    function updateChart(newData, newLabel, newYDomain) {
-      y.domain(newYDomain).nice();
+      yAxis.append("text")
+           .attr("class", "axis-label")
+           .attr("x", -margin.left)
+           .attr("y", margin.top - 10)
+           .attr("fill", "black")
+           .attr("text-anchor", "start")
+           .text(label);
 
-      yAxis.transition()
-           .duration(1000)
-           .call(d3.axisLeft(y));
-
-      yAxis.select(".axis-label")
-           .text(newLabel);
-
-      bars.data(newData)
-          .transition()
-          .duration(1000)
-          .attr("y", d => y(d))
-          .attr("height", d => y(0) - y(d));
+      svg.selectAll(".bar")
+         .data(data)
+         .enter().append("rect")
+         .attr("class", "bar")
+         .attr("x", (d, i) => x(years[i]))
+         .attr("y", d => y(d))
+         .attr("width", x.bandwidth())
+         .attr("height", d => y(0) - y(d));
     }
 
     var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for county chart
@@ -188,19 +186,19 @@
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        updateChart(populationData, "Population", [3500000, 3700000]);
+        updateChart("#population-chart", populationData, "Population", [3500000, 3700000]);
       } else if (state === 2) {
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        updateChart(employmentData, "Employment", [2100000, 2400000]);
+        updateChart("#employment-chart", employmentData, "Employment", [2100000, 2400000]);
       } else if (state === 3) {
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        updateChart(incomeData, "Per Capita Income", [60000, 85000]);
+        updateChart("#income-chart", incomeData, "Per Capita Income", [60000, 85000]);
       } else if (state === 4) {
-        document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.remove('hidden');
       }
