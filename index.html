@@ -32,15 +32,12 @@
     }
     .tooltip {
       position: absolute;
-      text-align: left;
-      width: 200px;
-      height: auto;
+      background-color: white;
+      border: 1px solid black;
       padding: 10px;
-      font: 12px sans-serif;
-      background: lightgray;
-      border: 1px solid #333;
-      border-radius: 5px;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
   </style>
 </head>
@@ -56,14 +53,13 @@
     <svg id="chart" width="800" height="400"></svg>
   </div>
 
-  <div id="ohio-map-container" class="hidden">
-    <svg id="ohio-map" width="800" height="600"></svg>
-    <div id="tooltip" class="tooltip hidden"></div>
-  </div>
-
   <div class="button-container">
     <button id="prev-button">Prev</button>
     <button id="next-button">Next</button>
+  </div>
+
+  <div class="tooltip" id="tooltip">
+    <svg id="tooltip-chart" width="400" height="200"></svg>
   </div>
 
   <script>
@@ -82,12 +78,78 @@
 
     var path = d3.geoPath().projection(projection);
 
+    var tooltip = d3.select("#tooltip");
+    var tooltipChart = d3.select("#tooltip-chart");
+    var tooltipWidth = 400;
+    var tooltipHeight = 200;
+    var tooltipMargin = {top: 20, right: 20, bottom: 20, left: 50};
+
+    var sampleData = [20, 30, 40, 50, 60, 70];
+    var sampleYears = [2015, 2016, 2017, 2018, 2019, 2020];
+
+    var xTooltip = d3.scaleBand()
+                     .domain(sampleYears)
+                     .range([tooltipMargin.left, tooltipWidth - tooltipMargin.right])
+                     .padding(0.1);
+
+    var yTooltip = d3.scaleLinear()
+                     .domain([0, d3.max(sampleData)])
+                     .nice()
+                     .range([tooltipHeight - tooltipMargin.bottom, tooltipMargin.top]);
+
+    tooltipChart.append("g")
+                .attr("class", "x-axis-tooltip")
+                .attr("transform", `translate(0,${tooltipHeight - tooltipMargin.bottom})`)
+                .call(d3.axisBottom(xTooltip).tickSizeOuter(0))
+                .append("text")
+                .attr("class", "axis-label")
+                .attr("x", tooltipWidth / 2)
+                .attr("y", tooltipMargin.bottom - 10)
+                .attr("fill", "black")
+                .attr("text-anchor", "middle")
+                .text("Year");
+
+    var yAxisTooltip = tooltipChart.append("g")
+                                   .attr("class", "y-axis-tooltip")
+                                   .attr("transform", `translate(${tooltipMargin.left},0)`)
+                                   .call(d3.axisLeft(yTooltip));
+
+    yAxisTooltip.append("text")
+                .attr("class", "axis-label")
+                .attr("x", -tooltipMargin.left)
+                .attr("y", tooltipMargin.top - 10)
+                .attr("fill", "black")
+                .attr("text-anchor", "start")
+                .text("Value");
+
+    var barsTooltip = tooltipChart.selectAll(".bar-tooltip")
+                                  .data(sampleData)
+                                  .enter().append("rect")
+                                  .attr("class", "bar-tooltip")
+                                  .attr("x", (d, i) => xTooltip(sampleYears[i]))
+                                  .attr("y", d => yTooltip(d))
+                                  .attr("width", xTooltip.bandwidth())
+                                  .attr("height", d => yTooltip(0) - yTooltip(d));
+
     d3.json("ct-counties.geojson").then(function(data) {
       mapSvg.selectAll("path")
             .data(data.features)
             .enter().append("path")
             .attr("d", path)
-            .attr("class", "county");
+            .attr("class", "county")
+            .on("click", function(event, d) {
+              // Show tooltip and update chart with data for the clicked county
+              tooltip.style("left", (event.pageX + 10) + "px")
+                     .style("top", (event.pageY - 20) + "px")
+                     .style("opacity", 1);
+
+              // Example: Update the tooltip chart with new data for the selected county
+              barsTooltip.data(sampleData)
+                         .transition()
+                         .duration(500)
+                         .attr("y", d => yTooltip(d))
+                         .attr("height", d => yTooltip(0) - yTooltip(d));
+            });
     }).catch(function(error) {
       console.log(error);
     });
@@ -169,78 +231,47 @@
           .attr("height", d => y(0) - y(d));
     }
 
-    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for Ohio map
+    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart
 
     function updateVisualization() {
-      document.getElementById('map-container').classList.add('hidden');
-      document.getElementById('chart-container').classList.add('hidden');
-      document.getElementById('ohio-map-container').classList.add('hidden');
-
       if (state === 0) {
         document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('chart-container').classList.add('hidden');
+        tooltip.style("opacity", 0); // Hide tooltip when switching back to map
       } else if (state === 1) {
+        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(populationData, "Population", [3500000, 3700000]);
       } else if (state === 2) {
+        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(employmentData, "Employment", [2100000, 2400000]);
       } else if (state === 3) {
+        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(incomeData, "Per Capita Income", [60000, 85000]);
-      } else if (state === 4) {
-        document.getElementById('ohio-map-container').classList.remove('hidden');
       }
     }
 
+    // Button event listeners
     document.getElementById('prev-button').addEventListener('click', function() {
-      state = (state - 1 + 5) % 5;
+      state = (state - 1 + 4) % 4;
       updateVisualization();
     });
 
     document.getElementById('next-button').addEventListener('click', function() {
-      state = (state + 1) % 5;
+      state = (state + 1) % 4;
       updateVisualization();
     });
 
     // Initialize the visualization
     updateVisualization();
 
-    // Ohio County Map
-    var ohioMapSvg = d3.select("#ohio-map")
-                       .attr("width", mapWidth)
-                       .attr("height", mapHeight);
-
-    var ohioProjection = d3.geoMercator()
-                           .center([-82.9071, 40.4173]) // Center the map on Ohio
-                           .scale(4000) // Scale the map to fit within the SVG
-                           .translate([mapWidth / 2, mapHeight / 2]);
-
-    var ohioPath = d3.geoPath().projection(ohioProjection);
-
-    var tooltip = d3.select("#tooltip");
-
-    d3.json("ct-counties.geojson").then(function(data) {
-      ohioMapSvg.selectAll("path")
-                .data(data.features)
-                .enter().append("path")
-                .attr("d", ohioPath)
-                .attr("class", "county")
-                .on("click", function(event, d) {
-                  var countyData = d.properties; // Assuming the data is in the properties object
-
-                  // Show the tooltip
-                  tooltip.classed("hidden", false)
-                         .style("left", (event.pageX + 10) + "px")
-                         .style("top", (event.pageY - 10) + "px");
-
-                  // Populate the tooltip with the county data
-                  tooltip.html("<h2>" + countyData.name + "</h2>"
-                              + "<p>Population: " + countyData.population + "</p>"
-                              + "<p>Employment: " + countyData.employment + "</p>"
-                              + "<p>Per Capita Income: " + countyData.income + "</p>");
-                });
-    }).catch(function(error) {
-      console.log(error);
+    // Hide tooltip when clicking outside the map
+    d3.select("body").on("click", function() {
+      if (event.target.tagName !== "path") {
+        tooltip.style("opacity", 0);
+      }
     });
   </script>
 </body>
