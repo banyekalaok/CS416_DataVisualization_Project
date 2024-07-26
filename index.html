@@ -12,10 +12,10 @@
       height: 600px;
     }
     #map.states {
-      background-image: url('ct-states.png'); /* Image for the states map */
+      background-image: url('ct-states.png'); /* Image for the first page */
     }
     #map.counties {
-      background-image: url('ct-counties.jpg'); /* Image for the counties map */
+      background-image: url('ct-counties.jpg'); /* Image for the fifth page */
     }
     #map.new-page {
       background-image: url('ct-counties.jpg'); /* Image for the new page */
@@ -56,11 +56,7 @@
   <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
-    <div id="map" class="states"></div> <!-- Default image for the states map -->
-  </div>
-
-  <div id="chart-container" class="hidden">
-    <svg id="chart" width="800" height="400"></svg>
+    <div id="map" class="states"></div> <!-- Default image for the first page -->
   </div>
 
   <div class="dropdown-container hidden">
@@ -70,8 +66,8 @@
     </select>
   </div>
 
-  <div id="new-page-container" class="hidden">
-    <div id="map" class="new-page"></div> <!-- Image for the new page -->
+  <div id="chart-container" class="hidden">
+    <svg id="chart" width="800" height="400"></svg>
   </div>
 
   <div class="button-container">
@@ -198,14 +194,12 @@
         document.getElementById('map-container').classList.remove('hidden');
         document.getElementById('chart-container').classList.add('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        document.getElementById('new-page-container').classList.add('hidden');
       } else if (state === 1) {
         document.getElementById('map').classList.remove('counties', 'new-page');
         document.getElementById('map').classList.add('states');
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        document.getElementById('new-page-container').classList.add('hidden');
         updateChart(populationData, "Population", [3500000, 3700000]);
       } else if (state === 2) {
         document.getElementById('map').classList.remove('counties', 'new-page');
@@ -213,7 +207,6 @@
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        document.getElementById('new-page-container').classList.add('hidden');
         updateChart(employmentData, "Employment", [2100000, 2400000]);
       } else if (state === 3) {
         document.getElementById('map').classList.remove('counties', 'new-page');
@@ -221,22 +214,19 @@
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        document.getElementById('new-page-container').classList.add('hidden');
         updateChart(incomeData, "Per Capita Income", [60000, 85000]);
-      } else if (state === 4) {
+      } else if (state === 5) {
         document.getElementById('map').classList.remove('states', 'new-page');
         document.getElementById('map').classList.add('counties');
         document.getElementById('map-container').classList.remove('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.remove('hidden');
-        document.getElementById('new-page-container').classList.add('hidden');
-      } else if (state === 5) {
+      } else if (state === 4) {
         document.getElementById('map').classList.remove('states', 'counties');
         document.getElementById('map').classList.add('new-page');
-        document.getElementById('map-container').classList.add('hidden');
+        document.getElementById('map-container').classList.remove('hidden');
         document.getElementById('chart-container').classList.add('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
-        document.getElementById('new-page-container').classList.remove('hidden');
       }
     }
 
