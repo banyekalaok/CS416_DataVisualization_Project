@@ -5,6 +5,13 @@
   <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022.">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
+    #map {
+      background-image: url('ct-counties.jpeg'); /* Use your image file here */
+      background-size: cover;
+      background-position: center;
+      width: 800px;
+      height: 600px;
+    }
     path {
       fill: lightblue;
       stroke: black;
@@ -41,7 +48,7 @@
   <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
-    <svg id="map" width="800" height="600"></svg>
+    <div id="map"></div>
   </div>
 
   <div class="dropdown-container hidden">
@@ -60,48 +67,25 @@
   </div>
 
   <script>
-    // Connecticut County Map
-    var mapWidth = 800;
-    var mapHeight = 600;
+    // Dummy data for counties (for dropdown functionality)
+    var countyData = {
+      "Fairfield": [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+      "Hartford": [250000, 255000, 260000, 265000, 270000, 275000, 280000, 285000, 290000, 295000, 300000, 305000, 310000],
+      "Litchfield": [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+      "Middlesex": [150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000],
+      "New Haven": [350000, 355000, 360000, 365000, 370000, 375000, 380000, 385000, 390000, 395000, 400000, 405000, 410000],
+      "New London": [175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000],
+      "Tolland": [125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000],
+      "Windham": [100000, 105000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000]
+    };
 
-    var mapSvg = d3.select("#map")
-                   .attr("width", mapWidth)
-                   .attr("height", mapHeight);
+    function updateCountyChart(countyName) {
+      var selectedData = countyData[countyName];
 
-    var projection = d3.geoMercator()
-                       .center([-72.6940, 41.6032]) // Center the map on Connecticut
-                       .scale(8000) // Scale the map to fit within the SVG
-                       .translate([mapWidth / 2, mapHeight / 2]);
+      updateChart(selectedData, countyName + " Population", [100000, 400000]);
+    }
 
-    var path = d3.geoPath().projection(projection);
-
-    d3.json("ct-counties.geojson").then(function(data) {
-      mapSvg.selectAll("path")
-            .data(data.features)
-            .enter().append("path")
-            .attr("d", path)
-            .attr("class", "county");
-
-      // Populate the dropdown menu
-      var dropdown = d3.select("#county-dropdown");
-      data.features.forEach(function(d) {
-        dropdown.append("option")
-                .attr("value", d.properties.name)
-                .text(d.properties.name);
-      });
-
-      // Event listener for dropdown menu
-      dropdown.on("change", function() {
-        var selectedCounty = d3.select(this).property("value");
-        if (selectedCounty) {
-          updateCountyChart(selectedCounty);
-        }
-      });
-    }).catch(function(error) {
-      console.log(error);
-    });
-
-    // Ohio Population, Employment, and Per Capita Income Bar Charts
+    // Connecticut Population, Employment, and Per Capita Income Bar Charts
     var chartWidth = 800;
     var chartHeight = 400;
     var margin = {top: 30, right: 20, bottom: 50, left: 50};
@@ -176,24 +160,6 @@
           .duration(1000)
           .attr("y", d => y(d))
           .attr("height", d => y(0) - y(d));
-    }
-
-    function updateCountyChart(countyName) {
-      // Dummy data for counties, replace with actual data
-      var countyData = {
-        "Fairfield": [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
-        "Hartford": [250000, 255000, 260000, 265000, 270000, 275000, 280000, 285000, 290000, 295000, 300000, 305000, 310000],
-        "Litchfield": [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
-        "Middlesex": [150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000],
-        "New Haven": [350000, 355000, 360000, 365000, 370000, 375000, 380000, 385000, 390000, 395000, 400000, 405000, 410000],
-        "New London": [175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000],
-        "Tolland": [125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000],
-        "Windham": [100000, 105000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000]
-      };
-
-      var selectedData = countyData[countyName];
-
-      updateChart(selectedData, countyName + " Population", [100000, 400000]);
     }
 
     var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for county chart
