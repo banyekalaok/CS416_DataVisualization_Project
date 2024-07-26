@@ -44,7 +44,7 @@
   </style>
 </head>
 <body>
-  <h1>Connecticut County Map and Ohio Bar Charts</h1>
+  <h1>Connecticut County Map and CT Bar Charts</h1>
   <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
@@ -54,6 +54,7 @@
   <div class="dropdown-container hidden">
     <select id="county-dropdown">
       <option value="">Select a county</option>
+      <!-- Dropdown options will be added here dynamically -->
     </select>
   </div>
 
@@ -79,9 +80,23 @@
       "Windham": [100000, 105000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000]
     };
 
+    // Populate the dropdown menu with county names
+    var dropdown = d3.select("#county-dropdown");
+    for (var county in countyData) {
+      dropdown.append("option")
+              .attr("value", county)
+              .text(county);
+    }
+
+    dropdown.on("change", function() {
+      var selectedCounty = this.value;
+      if (selectedCounty) {
+        updateCountyChart(selectedCounty);
+      }
+    });
+
     function updateCountyChart(countyName) {
       var selectedData = countyData[countyName];
-
       updateChart(selectedData, countyName + " Population", [100000, 400000]);
     }
 
