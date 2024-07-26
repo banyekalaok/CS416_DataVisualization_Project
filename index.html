@@ -17,6 +17,9 @@
     #map.counties {
       background-image: url('ct-counties.jpg'); /* Image for the fifth page */
     }
+    #map.new-page {
+      background-image: url('ct-counties.jpg'); /* Image for the new page */
+    }
     path {
       fill: lightblue;
       stroke: black;
@@ -182,53 +185,59 @@
           .attr("height", d => y(0) - y(d));
     }
 
-    var state = 0; // 0 for states map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for counties chart
+    var state = 0; // 0 for states map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for counties chart, 5 for new page
 
     function updateVisualization() {
       if (state === 0) {
-        document.getElementById('map').classList.remove('counties');
+        document.getElementById('map').classList.remove('counties', 'new-page');
         document.getElementById('map').classList.add('states');
         document.getElementById('map-container').classList.remove('hidden');
         document.getElementById('chart-container').classList.add('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
       } else if (state === 1) {
-        document.getElementById('map').classList.remove('counties');
+        document.getElementById('map').classList.remove('counties', 'new-page');
         document.getElementById('map').classList.add('states');
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
         updateChart(populationData, "Population", [3500000, 3700000]);
       } else if (state === 2) {
-        document.getElementById('map').classList.remove('counties');
+        document.getElementById('map').classList.remove('counties', 'new-page');
         document.getElementById('map').classList.add('states');
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
         updateChart(employmentData, "Employment", [2100000, 2400000]);
       } else if (state === 3) {
-        document.getElementById('map').classList.remove('counties');
+        document.getElementById('map').classList.remove('counties', 'new-page');
         document.getElementById('map').classList.add('states');
         document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.add('hidden');
         updateChart(incomeData, "Per Capita Income", [60000, 85000]);
       } else if (state === 4) {
-        document.getElementById('map').classList.remove('states');
+        document.getElementById('map').classList.remove('states', 'new-page');
         document.getElementById('map').classList.add('counties');
         document.getElementById('map-container').classList.remove('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         document.querySelector('.dropdown-container').classList.remove('hidden');
+      } else if (state === 5) {
+        document.getElementById('map').classList.remove('states', 'counties');
+        document.getElementById('map').classList.add('new-page');
+        document.getElementById('map-container').classList.remove('hidden');
+        document.getElementById('chart-container').classList.add('hidden');
+        document.querySelector('.dropdown-container').classList.add('hidden');
       }
     }
 
     // Button event listeners
     document.getElementById('prev-button').addEventListener('click', function() {
-      state = (state - 1 + 5) % 5;
+      state = (state - 1 + 6) % 6; // Adjusted for 6 states
       updateVisualization();
     });
 
     document.getElementById('next-button').addEventListener('click', function() {
-      state = (state + 1) % 5;
+      state = (state + 1) % 6; // Adjusted for 6 states
       updateVisualization();
     });
 
