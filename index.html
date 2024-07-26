@@ -30,6 +30,18 @@
     .hidden {
       display: none;
     }
+    .tooltip {
+      position: absolute;
+      text-align: left;
+      width: 200px;
+      height: auto;
+      padding: 10px;
+      font: 12px sans-serif;
+      background: lightgray;
+      border: 1px solid #333;
+      border-radius: 5px;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -42,6 +54,11 @@
 
   <div id="chart-container" class="hidden">
     <svg id="chart" width="800" height="400"></svg>
+  </div>
+
+  <div id="ohio-map-container" class="hidden">
+    <svg id="ohio-map" width="800" height="600"></svg>
+    <div id="tooltip" class="tooltip hidden"></div>
   </div>
 
   <div class="button-container">
@@ -95,7 +112,7 @@
               .padding(0.1);
 
     var y = d3.scaleLinear()
-              .domain([0, 3700000]) // Adjusted y-axis range
+              .domain([3500000, 3700000]) // Adjusted y-axis range
               .nice()
               .range([chartHeight - margin.bottom, margin.top]);
 
@@ -152,40 +169,79 @@
           .attr("height", d => y(0) - y(d));
     }
 
-    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart
+    var state = 0; // 0 for map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for Ohio map
 
     function updateVisualization() {
+      document.getElementById('map-container').classList.add('hidden');
+      document.getElementById('chart-container').classList.add('hidden');
+      document.getElementById('ohio-map-container').classList.add('hidden');
+
       if (state === 0) {
         document.getElementById('map-container').classList.remove('hidden');
-        document.getElementById('chart-container').classList.add('hidden');
       } else if (state === 1) {
-        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(populationData, "Population", [3500000, 3700000]);
       } else if (state === 2) {
-        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(employmentData, "Employment", [2100000, 2400000]);
       } else if (state === 3) {
-        document.getElementById('map-container').classList.add('hidden');
         document.getElementById('chart-container').classList.remove('hidden');
         updateChart(incomeData, "Per Capita Income", [60000, 85000]);
+      } else if (state === 4) {
+        document.getElementById('ohio-map-container').classList.remove('hidden');
       }
     }
 
-    // Button event listeners
     document.getElementById('prev-button').addEventListener('click', function() {
-      state = (state - 1 + 4) % 4;
+      state = (state - 1 + 5) % 5;
       updateVisualization();
     });
 
     document.getElementById('next-button').addEventListener('click', function() {
-      state = (state + 1) % 4;
+      state = (state + 1) % 5;
       updateVisualization();
     });
 
     // Initialize the visualization
     updateVisualization();
+
+    // Ohio County Map
+    var ohioMapSvg = d3.select("#ohio-map")
+                       .attr("width", mapWidth)
+                       .attr("height", mapHeight);
+
+    var ohioProjection = d3.geoMercator()
+                           .center([-82.9071, 40.4173]) // Center the map on Ohio
+                           .scale(4000) // Scale the map to fit within the SVG
+                           .translate([mapWidth / 2, mapHeight / 2]);
+
+    var ohioPath = d3.geoPath().projection(ohioProjection);
+
+    var tooltip = d3.select("#tooltip");
+
+    d3.json("ct-counties.geojson").then(function(data) {
+      ohioMapSvg.selectAll("path")
+                .data(data.features)
+                .enter().append("path")
+                .attr("d", ohioPath)
+                .attr("class", "county")
+                .on("click", function(event, d) {
+                  var countyData = d.properties; // Assuming the data is in the properties object
+
+                  // Show the tooltip
+                  tooltip.classed("hidden", false)
+                         .style("left", (event.pageX + 10) + "px")
+                         .style("top", (event.pageY - 10) + "px");
+
+                  // Populate the tooltip with the county data
+                  tooltip.html("<h2>" + countyData.name + "</h2>"
+                              + "<p>Population: " + countyData.population + "</p>"
+                              + "<p>Employment: " + countyData.employment + "</p>"
+                              + "<p>Per Capita Income: " + countyData.income + "</p>");
+                });
+    }).catch(function(error) {
+      console.log(error);
+    });
   </script>
 </body>
 </html>
