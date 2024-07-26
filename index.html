@@ -80,74 +80,73 @@
 
   <script>
     // Constants for SVG dimensions
-    var chartWidth = 800;
-    var chartHeight = 400;
-    var margin = {top: 30, right: 20, bottom: 50, left: 50};
-    var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+    const chartWidth = 800;
+    const chartHeight = 400;
+    const margin = {top: 30, right: 20, bottom: 50, left: 50};
+    const years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
     
-    // Datasets for Connecticut
-    var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
-    var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
-    var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
+    // Dummy data for Connecticut
+    const populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+    const employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
+    const incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
     
     // SVG containers
-    var populationSvg = d3.select("#population-svg");
-    var incomeSvg = d3.select("#income-svg");
-    var employmentSvg = d3.select("#employment-svg");
+    const populationSvg = d3.select("#population-svg");
+    const incomeSvg = d3.select("#income-svg");
+    const employmentSvg = d3.select("#employment-svg");
 
     // Setup scales and axes
     function setupChart(svg, data, label, yDomain) {
-      var x = d3.scaleBand()
-                .domain(years)
-                .range([margin.left, chartWidth - margin.right])
-                .padding(0.1);
+      const x = d3.scaleBand()
+        .domain(years)
+        .range([margin.left, chartWidth - margin.right])
+        .padding(0.1);
 
-      var y = d3.scaleLinear()
-                .domain(yDomain)
-                .nice()
-                .range([chartHeight - margin.bottom, margin.top]);
+      const y = d3.scaleLinear()
+        .domain(yDomain)
+        .nice()
+        .range([chartHeight - margin.bottom, margin.top]);
 
       svg.selectAll("*").remove();
 
       svg.append("g")
-         .attr("class", "x-axis")
-         .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-         .call(d3.axisBottom(x).tickSizeOuter(0))
-         .append("text")
-         .attr("class", "axis-label")
-         .attr("x", chartWidth / 2)
-         .attr("y", margin.bottom - 10)
-         .attr("fill", "black")
-         .attr("text-anchor", "middle")
-         .text("Year");
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0))
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("x", chartWidth / 2)
+        .attr("y", margin.bottom - 10)
+        .attr("fill", "black")
+        .attr("text-anchor", "middle")
+        .text("Year");
 
-      var yAxis = svg.append("g")
-                     .attr("class", "y-axis")
-                     .attr("transform", `translate(${margin.left},0)`)
-                     .call(d3.axisLeft(y));
+      const yAxis = svg.append("g")
+        .attr("class", "y-axis")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
 
       yAxis.append("text")
-           .attr("class", "axis-label")
-           .attr("x", -margin.left)
-           .attr("y", margin.top - 10)
-           .attr("fill", "black")
-           .attr("text-anchor", "start")
-           .text(label);
+        .attr("class", "axis-label")
+        .attr("x", -margin.left)
+        .attr("y", margin.top - 10)
+        .attr("fill", "black")
+        .attr("text-anchor", "start")
+        .text(label);
 
       svg.selectAll(".bar")
-         .data(data)
-         .enter().append("rect")
-         .attr("class", "bar")
-         .attr("x", (d, i) => x(years[i]))
-         .attr("y", d => y(d))
-         .attr("width", x.bandwidth())
-         .attr("height", d => y(0) - y(d));
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", (d, i) => x(years[i]))
+        .attr("y", d => y(d))
+        .attr("width", x.bandwidth())
+        .attr("height", d => y(0) - y(d));
     }
 
     // Update charts for selected county
     function updateCountyCharts(countyName) {
-      // Dummy data for counties
-      var countyData = {
+      const countyData = {
         "Fairfield, CT": {
           population: [919702, 929775, 938339, 944612, 950338, 952518, 953669, 954050, 956852, 957097, 955261, 963050, 962946],
           income: [102572, 102997, 101729, 95083, 99718, 101239, 103708, 106972, 112898, 113634, 115859, 119982, 125185],
@@ -191,7 +190,7 @@
         }
       };
 
-      var selectedData = countyData[countyName];
+      const selectedData = countyData[countyName];
       if (selectedData) {
         setupChart(populationSvg, selectedData.population, countyName + " Population", [0, d3.max(selectedData.population)]);
         setupChart(incomeSvg, selectedData.income, countyName + " Per Capita Income", [0, d3.max(selectedData.income)]);
@@ -204,7 +203,7 @@
 
     // Event listener for dropdown change
     d3.select("#county-dropdown").on("change", function() {
-      var selectedCounty = d3.select(this).property("value");
+      const selectedCounty = d3.select(this).property("value");
       if (selectedCounty) {
         d3.select("#chart-container").classed("hidden", false);
         updateCountyCharts(selectedCounty);
@@ -214,11 +213,11 @@
     });
 
     // Next and Previous button functionality
-    var currentIndex = 0;
-    var counties = ["Fairfield, CT", "Hartford, CT", "Litchfield, CT", "Middlesex, CT", "New Haven, CT", "New London, CT", "Tolland, CT", "Windham, CT"];
+    let currentIndex = 0;
+    const counties = ["Fairfield, CT", "Hartford, CT", "Litchfield, CT", "Middlesex, CT", "New Haven, CT", "New London, CT", "Tolland, CT", "Windham, CT"];
 
     function updateCharts() {
-      var county = counties[currentIndex];
+      const county = counties[currentIndex];
       updateCountyCharts(county);
       d3.select("#county-dropdown").property("value", county);
     }
