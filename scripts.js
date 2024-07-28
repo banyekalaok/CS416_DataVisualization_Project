@@ -145,29 +145,6 @@ function updateChart(data, yAxisText, yRange) {
 var pages = ["map", "population", "employment", "income", "counties", "new-page"];
 var currentPage = 0;
 
-// function showPage(index) {
-//   d3.select("#map-container").classed("active", index === 0 || index === 4 || index === 5);
-//   d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
-//   d3.select("#county-charts-container").classed("active", index === 4);
-//   d3.select(".dropdown-container").classed("active", index === 4);
-
-//   if (index === 0) {
-//     d3.select("#map").attr("class", "states");
-//   } else if (index === 4) {
-//     d3.select("#map").attr("class", "counties");
-//   } else {
-//     d3.select("#map").attr("class", "");
-//   }
-
-//   if (index === 1) {
-//     updateChart(populationData, "Population", [3500000, 3700000]);
-//   } else if (index === 2) {
-//     updateChart(employmentData, "Employment", [2100000, 2400000]);
-//   } else if (index === 3) {
-//     updateChart(incomeData, "Per Capita Income", [60000, 85000]);
-//   }
-// }
-
 function showPage(index) {
   // Clear the 'active' class from all containers
   d3.select("#map-container").classed("active", false);
