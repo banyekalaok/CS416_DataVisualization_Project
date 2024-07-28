@@ -1,0 +1,50 @@
+#map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 600px; /* Adjust as necessary to fit your layout */
+}
+#map {
+  background-size: cover;
+  background-position: center;
+  width: 800px;
+  height: 600px;
+}
+#map.states {
+  background-image: url('ct-states.png'); /* Image for the first page */
+}
+#map.counties {
+  background-image: url('ct-counties.jpg'); /* Image for the fifth page */
+}
+#map.new-page {
+  background-image: url('ct-counties.jpg'); /* Image for the new page */
+}
+path {
+  fill: lightblue;
+  stroke: black;
+}
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.button-container button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+}
+.bar {
+  fill: steelblue;
+}
+.bar:hover {
+  fill: darkblue;
+}
+.axis-label {
+  font-size: 12px;
+}
+.hidden {
+  display: none;
+}
+.dropdown-container {
+  text-align: center;
+  margin-top: 20px;
+}
