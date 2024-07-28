@@ -72,3 +72,7 @@ path {
   width: 800px;
   height: 400px;
 }
+
+.hidden {
+  display: none;
+}
