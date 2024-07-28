@@ -1,352 +1,118 @@
-﻿GeoName,Description,Attribute,Value
-Connecticut,Population,2010,3580279
-Connecticut,Population,2011,3594193
-Connecticut,Population,2012,3605259
-Connecticut,Population,2013,3610314
-Connecticut,Population,2014,3614695
-Connecticut,Population,2015,3611995
-Connecticut,Population,2016,3607688
-Connecticut,Population,2017,3607615
-Connecticut,Population,2018,3611318
-Connecticut,Population,2019,3607159
-Connecticut,Population,2020,3597362
-Connecticut,Population,2021,3623355
-Connecticut,Population,2022,3626205
-Connecticut,Per capita personal income,2010,61392
-Connecticut,Per capita personal income,2011,62964
-Connecticut,Per capita personal income,2012,63555
-Connecticut,Per capita personal income,2013,61999
-Connecticut,Per capita personal income,2014,64482
-Connecticut,Per capita personal income,2015,66220
-Connecticut,Per capita personal income,2016,67550
-Connecticut,Per capita personal income,2017,69146
-Connecticut,Per capita personal income,2018,72157
-Connecticut,Per capita personal income,2019,74173
-Connecticut,Per capita personal income,2020,77383
-Connecticut,Per capita personal income,2021,80691
-Connecticut,Per capita personal income,2022,82938
-Connecticut,Total employment,2010,2171940
-Connecticut,Total employment,2011,2206253
-Connecticut,Total employment,2012,2223243
-Connecticut,Total employment,2013,2246505
-Connecticut,Total employment,2014,2266061
-Connecticut,Total employment,2015,2288144
-Connecticut,Total employment,2016,2301331
-Connecticut,Total employment,2017,2300273
-Connecticut,Total employment,2018,2314465
-Connecticut,Total employment,2019,2297910
-Connecticut,Total employment,2020,2217432
-Connecticut,Total employment,2021,2289551
-Connecticut,Total employment,2022,2391946
-"Fairfield, CT",Population,2010,919702
-"Fairfield, CT",Population,2011,929775
-"Fairfield, CT",Population,2012,938339
-"Fairfield, CT",Population,2013,944612
-"Fairfield, CT",Population,2014,950338
-"Fairfield, CT",Population,2015,952518
-"Fairfield, CT",Population,2016,953669
-"Fairfield, CT",Population,2017,954050
-"Fairfield, CT",Population,2018,956852
-"Fairfield, CT",Population,2019,957097
-"Fairfield, CT",Population,2020,955261
-"Fairfield, CT",Population,2021,963050
-"Fairfield, CT",Population,2022,962946
-"Fairfield, CT",Per capita personal income,2010,102572
-"Fairfield, CT",Per capita personal income,2011,102997
-"Fairfield, CT",Per capita personal income,2012,101729
-"Fairfield, CT",Per capita personal income,2013,95083
-"Fairfield, CT",Per capita personal income,2014,99718
-"Fairfield, CT",Per capita personal income,2015,101239
-"Fairfield, CT",Per capita personal income,2016,103708
-"Fairfield, CT",Per capita personal income,2017,106972
-"Fairfield, CT",Per capita personal income,2018,112898
-"Fairfield, CT",Per capita personal income,2019,113634
-"Fairfield, CT",Per capita personal income,2020,115859
-"Fairfield, CT",Per capita personal income,2021,119982
-"Fairfield, CT",Per capita personal income,2022,125185
-"Fairfield, CT",Total employment,2010,605634
-"Fairfield, CT",Total employment,2011,621729
-"Fairfield, CT",Total employment,2012,628393
-"Fairfield, CT",Total employment,2013,639197
-"Fairfield, CT",Total employment,2014,646565
-"Fairfield, CT",Total employment,2015,657037
-"Fairfield, CT",Total employment,2016,663787
-"Fairfield, CT",Total employment,2017,658198
-"Fairfield, CT",Total employment,2018,663335
-"Fairfield, CT",Total employment,2019,653822
-"Fairfield, CT",Total employment,2020,633880
-"Fairfield, CT",Total employment,2021,660242
-"Fairfield, CT",Total employment,2022,697773
-"Hartford, CT",Population,2010,895440
-"Hartford, CT",Population,2011,898033
-"Hartford, CT",Population,2012,899840
-"Hartford, CT",Population,2013,900791
-"Hartford, CT",Population,2014,901481
-"Hartford, CT",Population,2015,901332
-"Hartford, CT",Population,2016,899949
-"Hartford, CT",Population,2017,899713
-"Hartford, CT",Population,2018,900246
-"Hartford, CT",Population,2019,899727
-"Hartford, CT",Population,2020,896666
-"Hartford, CT",Population,2021,898265
-"Hartford, CT",Population,2022,898783
-"Hartford, CT",Per capita personal income,2010,50432
-"Hartford, CT",Per capita personal income,2011,52406
-"Hartford, CT",Per capita personal income,2012,53574
-"Hartford, CT",Per capita personal income,2013,53855
-"Hartford, CT",Per capita personal income,2014,55768
-"Hartford, CT",Per capita personal income,2015,57678
-"Hartford, CT",Per capita personal income,2016,58536
-"Hartford, CT",Per capita personal income,2017,59688
-"Hartford, CT",Per capita personal income,2018,61867
-"Hartford, CT",Per capita personal income,2019,63511
-"Hartford, CT",Per capita personal income,2020,66436
-"Hartford, CT",Per capita personal income,2021,69487
-"Hartford, CT",Per capita personal income,2022,70339
-"Hartford, CT",Total employment,2010,620140
-"Hartford, CT",Total employment,2011,629924
-"Hartford, CT",Total employment,2012,633093
-"Hartford, CT",Total employment,2013,638818
-"Hartford, CT",Total employment,2014,646397
-"Hartford, CT",Total employment,2015,652539
-"Hartford, CT",Total employment,2016,653785
-"Hartford, CT",Total employment,2017,656110
-"Hartford, CT",Total employment,2018,660969
-"Hartford, CT",Total employment,2019,659664
-"Hartford, CT",Total employment,2020,633784
-"Hartford, CT",Total employment,2021,647256
-"Hartford, CT",Total employment,2022,668935
-"Litchfield, CT",Population,2010,189898
-"Litchfield, CT",Population,2011,189659
-"Litchfield, CT",Population,2012,188811
-"Litchfield, CT",Population,2013,188622
-"Litchfield, CT",Population,2014,187661
-"Litchfield, CT",Population,2015,186974
-"Litchfield, CT",Population,2016,186156
-"Litchfield, CT",Population,2017,185552
-"Litchfield, CT",Population,2018,185504
-"Litchfield, CT",Population,2019,185264
-"Litchfield, CT",Population,2020,184818
-"Litchfield, CT",Population,2021,185799
-"Litchfield, CT",Population,2022,186116
-"Litchfield, CT",Per capita personal income,2010,49426
-"Litchfield, CT",Per capita personal income,2011,51949
-"Litchfield, CT",Per capita personal income,2012,53868
-"Litchfield, CT",Per capita personal income,2013,53345
-"Litchfield, CT",Per capita personal income,2014,54616
-"Litchfield, CT",Per capita personal income,2015,56257
-"Litchfield, CT",Per capita personal income,2016,57347
-"Litchfield, CT",Per capita personal income,2017,58252
-"Litchfield, CT",Per capita personal income,2018,59931
-"Litchfield, CT",Per capita personal income,2019,64549
-"Litchfield, CT",Per capita personal income,2020,70947
-"Litchfield, CT",Per capita personal income,2021,76129
-"Litchfield, CT",Per capita personal income,2022,79947
-"Litchfield, CT",Total employment,2010,94461
-"Litchfield, CT",Total employment,2011,95602
-"Litchfield, CT",Total employment,2012,96204
-"Litchfield, CT",Total employment,2013,96488
-"Litchfield, CT",Total employment,2014,97175
-"Litchfield, CT",Total employment,2015,97588
-"Litchfield, CT",Total employment,2016,96580
-"Litchfield, CT",Total employment,2017,95697
-"Litchfield, CT",Total employment,2018,96588
-"Litchfield, CT",Total employment,2019,95212
-"Litchfield, CT",Total employment,2020,92452
-"Litchfield, CT",Total employment,2021,96049
-"Litchfield, CT",Total employment,2022,100339
-"Middlesex, CT",Population,2010,165683
-"Middlesex, CT",Population,2011,166494
-"Middlesex, CT",Population,2012,166206
-"Middlesex, CT",Population,2013,166154
-"Middlesex, CT",Population,2014,165853
-"Middlesex, CT",Population,2015,165033
-"Middlesex, CT",Population,2016,164858
-"Middlesex, CT",Population,2017,164744
-"Middlesex, CT",Population,2018,164973
-"Middlesex, CT",Population,2019,164685
-"Middlesex, CT",Population,2020,163970
-"Middlesex, CT",Population,2021,166051
-"Middlesex, CT",Population,2022,166537
-"Middlesex, CT",Per capita personal income,2010,52977
-"Middlesex, CT",Per capita personal income,2011,54544
-"Middlesex, CT",Per capita personal income,2012,56630
-"Middlesex, CT",Per capita personal income,2013,56888
-"Middlesex, CT",Per capita personal income,2014,59206
-"Middlesex, CT",Per capita personal income,2015,61157
-"Middlesex, CT",Per capita personal income,2016,62242
-"Middlesex, CT",Per capita personal income,2017,63203
-"Middlesex, CT",Per capita personal income,2018,65060
-"Middlesex, CT",Per capita personal income,2019,67714
-"Middlesex, CT",Per capita personal income,2020,70759
-"Middlesex, CT",Per capita personal income,2021,73081
-"Middlesex, CT",Per capita personal income,2022,74591
-"Middlesex, CT",Total employment,2010,92891
-"Middlesex, CT",Total employment,2011,94000
-"Middlesex, CT",Total employment,2012,95526
-"Middlesex, CT",Total employment,2013,96510
-"Middlesex, CT",Total employment,2014,97188
-"Middlesex, CT",Total employment,2015,98011
-"Middlesex, CT",Total employment,2016,98748
-"Middlesex, CT",Total employment,2017,98253
-"Middlesex, CT",Total employment,2018,98555
-"Middlesex, CT",Total employment,2019,98216
-"Middlesex, CT",Total employment,2020,94655
-"Middlesex, CT",Total employment,2021,98338
-"Middlesex, CT",Total employment,2022,102635
-"New Haven, CT",Population,2010,863694
-"New Haven, CT",Population,2011,865458
-"New Haven, CT",Population,2012,867409
-"New Haven, CT",Population,2013,866896
-"New Haven, CT",Population,2014,868202
-"New Haven, CT",Population,2015,866734
-"New Haven, CT",Population,2016,865560
-"New Haven, CT",Population,2017,866435
-"New Haven, CT",Population,2018,866667
-"New Haven, CT",Population,2019,864743
-"New Haven, CT",Population,2020,863234
-"New Haven, CT",Population,2021,869138
-"New Haven, CT",Population,2022,869527
-"New Haven, CT",Per capita personal income,2010,44296
-"New Haven, CT",Per capita personal income,2011,45947
-"New Haven, CT",Per capita personal income,2012,46896
-"New Haven, CT",Per capita personal income,2013,47193
-"New Haven, CT",Per capita personal income,2014,48555
-"New Haven, CT",Per capita personal income,2015,50082
-"New Haven, CT",Per capita personal income,2016,50725
-"New Haven, CT",Per capita personal income,2017,51504
-"New Haven, CT",Per capita personal income,2018,53729
-"New Haven, CT",Per capita personal income,2019,56441
-"New Haven, CT",Per capita personal income,2020,60506
-"New Haven, CT",Per capita personal income,2021,63599
-"New Haven, CT",Per capita personal income,2022,64829
-"New Haven, CT",Total employment,2010,477548
-"New Haven, CT",Total employment,2011,482732
-"New Haven, CT",Total employment,2012,487949
-"New Haven, CT",Total employment,2013,492770
-"New Haven, CT",Total employment,2014,496762
-"New Haven, CT",Total employment,2015,501019
-"New Haven, CT",Total employment,2016,504365
-"New Haven, CT",Total employment,2017,506204
-"New Haven, CT",Total employment,2018,510921
-"New Haven, CT",Total employment,2019,511012
-"New Haven, CT",Total employment,2020,499399
-"New Haven, CT",Total employment,2021,515302
-"New Haven, CT",Total employment,2022,538440
-"New London, CT",Population,2010,274104
-"New London, CT",Population,2011,273513
-"New London, CT",Population,2012,274945
-"New London, CT",Population,2013,274204
-"New London, CT",Population,2014,273038
-"New London, CT",Population,2015,271593
-"New London, CT",Population,2016,270745
-"New London, CT",Population,2017,270266
-"New London, CT",Population,2018,269857
-"New London, CT",Population,2019,268874
-"New London, CT",Population,2020,267680
-"New London, CT",Population,2021,268300
-"New London, CT",Population,2022,268681
-"New London, CT",Per capita personal income,2010,45928
-"New London, CT",Per capita personal income,2011,47792
-"New London, CT",Per capita personal income,2012,48410
-"New London, CT",Per capita personal income,2013,48199
-"New London, CT",Per capita personal income,2014,49614
-"New London, CT",Per capita personal income,2015,52089
-"New London, CT",Per capita personal income,2016,53370
-"New London, CT",Per capita personal income,2017,54659
-"New London, CT",Per capita personal income,2018,55649
-"New London, CT",Per capita personal income,2019,58005
-"New London, CT",Per capita personal income,2020,61119
-"New London, CT",Per capita personal income,2021,64182
-"New London, CT",Per capita personal income,2022,64847
-"New London, CT",Total employment,2010,168285
-"New London, CT",Total employment,2011,168026
-"New London, CT",Total employment,2012,166646
-"New London, CT",Total employment,2013,165934
-"New London, CT",Total employment,2014,164515
-"New London, CT",Total employment,2015,164721
-"New London, CT",Total employment,2016,166953
-"New London, CT",Total employment,2017,168381
-"New London, CT",Total employment,2018,166335
-"New London, CT",Total employment,2019,163508
-"New London, CT",Total employment,2020,150870
-"New London, CT",Total employment,2021,157094
-"New London, CT",Total employment,2022,163717
-"Tolland, CT",Population,2010,153220
-"Tolland, CT",Population,2011,152960
-"Tolland, CT",Population,2012,151815
-"Tolland, CT",Population,2013,151557
-"Tolland, CT",Population,2014,151407
-"Tolland, CT",Population,2015,151372
-"Tolland, CT",Population,2016,150698
-"Tolland, CT",Population,2017,150527
-"Tolland, CT",Population,2018,150221
-"Tolland, CT",Population,2019,150091
-"Tolland, CT",Population,2020,149443
-"Tolland, CT",Population,2021,155971
-"Tolland, CT",Population,2022,156405
-"Tolland, CT",Per capita personal income,2010,44972
-"Tolland, CT",Per capita personal income,2011,46910
-"Tolland, CT",Per capita personal income,2012,48201
-"Tolland, CT",Per capita personal income,2013,48105
-"Tolland, CT",Per capita personal income,2014,50193
-"Tolland, CT",Per capita personal income,2015,51468
-"Tolland, CT",Per capita personal income,2016,52551
-"Tolland, CT",Per capita personal income,2017,53261
-"Tolland, CT",Per capita personal income,2018,54815
-"Tolland, CT",Per capita personal income,2019,57370
-"Tolland, CT",Per capita personal income,2020,59931
-"Tolland, CT",Per capita personal income,2021,60304
-"Tolland, CT",Per capita personal income,2022,61498
-"Tolland, CT",Total employment,2010,61593
-"Tolland, CT",Total employment,2011,62213
-"Tolland, CT",Total employment,2012,62835
-"Tolland, CT",Total employment,2013,63225
-"Tolland, CT",Total employment,2014,63327
-"Tolland, CT",Total employment,2015,63236
-"Tolland, CT",Total employment,2016,63672
-"Tolland, CT",Total employment,2017,64018
-"Tolland, CT",Total employment,2018,64492
-"Tolland, CT",Total employment,2019,63619
-"Tolland, CT",Total employment,2020,61507
-"Tolland, CT",Total employment,2021,62735
-"Tolland, CT",Total employment,2022,65692
-"Windham, CT",Population,2010,118538
-"Windham, CT",Population,2011,118301
-"Windham, CT",Population,2012,117894
-"Windham, CT",Population,2013,117478
-"Windham, CT",Population,2014,116715
-"Windham, CT",Population,2015,116439
-"Windham, CT",Population,2016,116053
-"Windham, CT",Population,2017,116328
-"Windham, CT",Population,2018,116998
-"Windham, CT",Population,2019,116678
-"Windham, CT",Population,2020,116290
-"Windham, CT",Population,2021,116781
-"Windham, CT",Population,2022,117210
-"Windham, CT",Per capita personal income,2010,37164
-"Windham, CT",Per capita personal income,2011,38325
-"Windham, CT",Per capita personal income,2012,38845
-"Windham, CT",Per capita personal income,2013,38925
-"Windham, CT",Per capita personal income,2014,40049
-"Windham, CT",Per capita personal income,2015,41301
-"Windham, CT",Per capita personal income,2016,42267
-"Windham, CT",Per capita personal income,2017,43472
-"Windham, CT",Per capita personal income,2018,44383
-"Windham, CT",Per capita personal income,2019,47378
-"Windham, CT",Per capita personal income,2020,50431
-"Windham, CT",Per capita personal income,2021,53289
-"Windham, CT",Per capita personal income,2022,53504
-"Windham, CT",Total employment,2010,51388
-"Windham, CT",Total employment,2011,52027
-"Windham, CT",Total employment,2012,52597
-"Windham, CT",Total employment,2013,53563
-"Windham, CT",Total employment,2014,54132
-"Windham, CT",Total employment,2015,53993
-"Windham, CT",Total employment,2016,53441
-"Windham, CT",Total employment,2017,53412
-"Windham, CT",Total employment,2018,53270
-"Windham, CT",Total employment,2019,52857
-"Windham, CT",Total employment,2020,50885
-"Windham, CT",Total employment,2021,52535
-"Windham, CT",Total employment,2022,54415
+﻿county,year,population,income,employment
+Connecticut,2010,3580279,61392,2171940
+Connecticut,2011,3594193,62964,2206253
+Connecticut,2012,3605259,63555,2223243
+Connecticut,2013,3610314,61999,2246505
+Connecticut,2014,3614695,64482,2266061
+Connecticut,2015,3611995,66220,2288144
+Connecticut,2016,3607688,67550,2301331
+Connecticut,2017,3607615,69146,2300273
+Connecticut,2018,3611318,72157,2314465
+Connecticut,2019,3607159,74173,2297910
+Connecticut,2020,3597362,77383,2217432
+Connecticut,2021,3623355,80691,2289551
+Connecticut,2022,3626205,82938,2391946
+"Fairfield, CT",2010,919702,102572,605634
+"Fairfield, CT",2011,929775,102997,621729
+"Fairfield, CT",2012,938339,101729,628393
+"Fairfield, CT",2013,944612,95083,639197
+"Fairfield, CT",2014,950338,99718,646565
+"Fairfield, CT",2015,952518,101239,657037
+"Fairfield, CT",2016,953669,103708,663787
+"Fairfield, CT",2017,954050,106972,658198
+"Fairfield, CT",2018,956852,112898,663335
+"Fairfield, CT",2019,957097,113634,653822
+"Fairfield, CT",2020,955261,115859,633880
+"Fairfield, CT",2021,963050,119982,660242
+"Fairfield, CT",2022,962946,125185,697773
+"Hartford, CT",2010,895440,50432,620140
+"Hartford, CT",2011,898033,52406,629924
+"Hartford, CT",2012,899840,53574,633093
+"Hartford, CT",2013,900791,53855,638818
+"Hartford, CT",2014,901481,55768,646397
+"Hartford, CT",2015,901332,57678,652539
+"Hartford, CT",2016,899949,58536,653785
+"Hartford, CT",2017,899713,59688,656110
+"Hartford, CT",2018,900246,61867,660969
+"Hartford, CT",2019,899727,63511,659664
+"Hartford, CT",2020,896666,66436,633784
+"Hartford, CT",2021,898265,69487,647256
+"Hartford, CT",2022,898783,70339,668935
+"Litchfield, CT",2010,189898,49426,94461
+"Litchfield, CT",2011,189659,51949,95602
+"Litchfield, CT",2012,188811,53868,96204
+"Litchfield, CT",2013,188622,53345,96488
+"Litchfield, CT",2014,187661,54616,97175
+"Litchfield, CT",2015,186974,56257,97588
+"Litchfield, CT",2016,186156,57347,96580
+"Litchfield, CT",2017,185552,58252,95697
+"Litchfield, CT",2018,185504,59931,96588
+"Litchfield, CT",2019,185264,64549,95212
+"Litchfield, CT",2020,184818,70947,92452
+"Litchfield, CT",2021,185799,76129,96049
+"Litchfield, CT",2022,186116,79947,100339
+"Middlesex, CT",2010,165683,52977,92891
+"Middlesex, CT",2011,166494,54544,94000
+"Middlesex, CT",2012,166206,56630,95526
+"Middlesex, CT",2013,166154,56888,96510
+"Middlesex, CT",2014,165853,59206,97188
+"Middlesex, CT",2015,165033,61157,98011
+"Middlesex, CT",2016,164858,62242,98748
+"Middlesex, CT",2017,164744,63203,98253
+"Middlesex, CT",2018,164973,65060,98555
+"Middlesex, CT",2019,164685,67714,98216
+"Middlesex, CT",2020,163970,70759,94655
+"Middlesex, CT",2021,166051,73081,98338
+"Middlesex, CT",2022,166537,74591,102635
+"New Haven, CT",2010,863694,44296,477548
+"New Haven, CT",2011,865458,45947,482732
+"New Haven, CT",2012,867409,46896,487949
+"New Haven, CT",2013,866896,47193,492770
+"New Haven, CT",2014,868202,48555,496762
+"New Haven, CT",2015,866734,50082,501019
+"New Haven, CT",2016,865560,50725,504365
+"New Haven, CT",2017,866435,51504,506204
+"New Haven, CT",2018,866667,53729,510921
+"New Haven, CT",2019,864743,56441,511012
+"New Haven, CT",2020,863234,60506,499399
+"New Haven, CT",2021,869138,63599,515302
+"New Haven, CT",2022,869527,64829,538440
+"New London, CT",2010,274104,45928,168285
+"New London, CT",2011,273513,47792,168026
+"New London, CT",2012,274945,48410,166646
+"New London, CT",2013,274204,48199,165934
+"New London, CT",2014,273038,49614,164515
+"New London, CT",2015,271593,52089,164721
+"New London, CT",2016,270745,53370,166953
+"New London, CT",2017,270266,54659,168381
+"New London, CT",2018,269857,55649,166335
+"New London, CT",2019,268874,58005,163508
+"New London, CT",2020,267680,61119,150870
+"New London, CT",2021,268300,64182,157094
+"New London, CT",2022,268681,64847,163717
+"Tolland, CT",2010,153220,44972,61593
+"Tolland, CT",2011,152960,46910,62213
+"Tolland, CT",2012,151815,48201,62835
+"Tolland, CT",2013,151557,48105,63225
+"Tolland, CT",2014,151407,50193,63327
+"Tolland, CT",2015,151372,51468,63236
+"Tolland, CT",2016,150698,52551,63672
+"Tolland, CT",2017,150527,53261,64018
+"Tolland, CT",2018,150221,54815,64492
+"Tolland, CT",2019,150091,57370,63619
+"Tolland, CT",2020,149443,59931,61507
+"Tolland, CT",2021,155971,60304,62735
+"Tolland, CT",2022,156405,61498,65692
+"Windham, CT",2010,118538,37164,51388
+"Windham, CT",2011,118301,38325,52027
+"Windham, CT",2012,117894,38845,52597
+"Windham, CT",2013,117478,38925,53563
+"Windham, CT",2014,116715,40049,54132
+"Windham, CT",2015,116439,41301,53993
+"Windham, CT",2016,116053,42267,53441
+"Windham, CT",2017,116328,43472,53412
+"Windham, CT",2018,116998,44383,53270
+"Windham, CT",2019,116678,47378,52857
+"Windham, CT",2020,116290,50431,50885
+"Windham, CT",2021,116781,53289,52535
+"Windham, CT",2022,117210,53504,54415
