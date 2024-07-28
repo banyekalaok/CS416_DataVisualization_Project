@@ -30,7 +30,7 @@
     <button id="next-button">Next</button>
   </div>
 
-  <div id="county-charts-container" class="visualization">
+<!--   <div id="county-charts-container" class="visualization">
     <div id="county-population-chart" class="county-chart">
       <svg></svg>
     </div>
@@ -40,12 +40,16 @@
     <div id="county-income-chart" class="county-chart">
       <svg></svg>
     </div>
+  </div> -->
+
+  <div id="county-charts-container" class="container">
+    <div class="dropdown-container active">
+      <select id="county-dropdown"></select>
+    </div>
+    <svg id="county-chart"></svg>
+    <div id="county-buttons"></div>
   </div>
 
-  <div id="county-detail-container" class="chart-container">
-  <h2>County Detail Chart</h2>
-  <svg id="county-detail-chart"></svg>
-  </div>
 
   <script src="scripts.js"></script>
 </body>
