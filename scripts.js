@@ -42,133 +42,109 @@ var countyData = {
   }
 };
 
-// Populate the dropdown menu with county names
-var dropdown = d3.select("#county-dropdown");
-for (var county in countyData) {
-  dropdown.append("option")
-          .attr("value", county)
-          .text(county);
-}
+var currentIndex = 0;
 
-dropdown.on("change", function() {
-  var selectedCounty = this.value;
-  if (selectedCounty) {
-    updateCountyCharts(selectedCounty);
+document.addEventListener("DOMContentLoaded", function() {
+  var mapContainer = document.getElementById("map-container");
+  var chartContainer = document.getElementById("chart-container");
+  var countyChartsContainer = document.getElementById("county-charts-container");
+  var dropdownContainer = document.querySelector(".dropdown-container");
+  var countyDropdown = document.getElementById("county-dropdown");
+  var countyPopulationChart = document.getElementById("county-population-chart");
+  var countyEmploymentChart = document.getElementById("county-employment-chart");
+  var countyIncomeChart = document.getElementById("county-income-chart");
+
+  var countyDropdownOptions = Object.keys(countyData).map(function(county) {
+    return `<option value="${county}">${county}</option>`;
+  }).join('');
+  countyDropdown.innerHTML += countyDropdownOptions;
+
+  document.getElementById("prev-button").addEventListener("click", function() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      showPage(currentIndex);
+    }
+  });
+
+  document.getElementById("next-button").addEventListener("click", function() {
+    if (currentIndex < 5) {
+      currentIndex++;
+      showPage(currentIndex);
+    }
+  });
+
+  countyDropdown.addEventListener("change", function() {
+    var selectedCounty = countyDropdown.value;
+    if (selectedCounty) {
+      updateChart(countyPopulationChart, countyData[selectedCounty].population, "Population");
+      updateChart(countyEmploymentChart, countyData[selectedCounty].employment, "Employment");
+      updateChart(countyIncomeChart, countyData[selectedCounty].income, "Income");
+    }
+  });
+
+  function showPage(index) {
+    mapContainer.classList.toggle("active", index === 0 || index === 4);
+    chartContainer.classList.toggle("active", index === 1 || index === 2 || index === 3);
+    countyChartsContainer.classList.toggle("active", index === 5);
+    dropdownContainer.classList.toggle("hidden", index !== 4 && index !== 5);
+    switch(index) {
+      case 0:
+        document.querySelector("#map").className = "states";
+        break;
+      case 4:
+        document.querySelector("#map").className = "counties";
+        break;
+      case 5:
+        // Clear previous chart content
+        countyPopulationChart.innerHTML = '';
+        countyEmploymentChart.innerHTML = '';
+        countyIncomeChart.innerHTML = '';
+        countyDropdown.value = '';
+        break;
+    }
   }
-});
 
-function updateCountyCharts(countyName) {
-  var selectedData = countyData[countyName];
-  updateChart(selectedData.population, countyName + " Population", [100000, 400000], "county-population-chart");
-  updateChart(selectedData.employment, countyName + " Employment", [100000, 300000], "county-employment-chart");
-  updateChart(selectedData.income, countyName + " Income", [50000, 70000], "county-income-chart");
-}
+  function updateChart(container, data, label) {
+    container.innerHTML = ''; // Clear previous chart content
 
-// Update existing functions to handle multiple charts
-function updateChart(data, yAxisText, yRange, chartId) {
-  var chartSvg = d3.select("#" + chartId + " svg");
+    var svg = d3.select(container)
+      .append("svg")
+      .attr("width", 500)
+      .attr("height", 300);
 
-  if (chartSvg.empty()) {
-    chartSvg = d3.select("#" + chartId)
-                 .append("svg")
-                 .attr("width", chartWidth)
-                 .attr("height", chartHeight);
+    var x = d3.scaleBand()
+      .domain(d3.range(data.length))
+      .range([0, 500])
+      .padding(0.1);
 
-    chartSvg.append("g")
-            .attr("class", "x-axis")
-            .attr("transform", `translate(0,${chartHeight - margin.bottom})`);
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .nice()
+      .range([300, 0]);
 
-    chartSvg.append("g")
-            .attr("class", "y-axis")
-            .attr("transform", `translate(${margin.left},0)`)
-            .append("text")
-            .attr("class", "axis-label")
-            .attr("x", -margin.left)
-            .attr("y", margin.top - 10)
-            .attr("fill", "black")
-            .attr("text-anchor", "start");
-  }
+    svg.append("g")
+      .attr("transform", "translate(0,300)")
+      .call(d3.axisBottom(x).tickFormat(function(d, i) { return 2010 + i; }));
 
-  var x = d3.scaleBand()
-            .domain(years)
-            .range([margin.left, chartWidth - margin.right])
-            .padding(0.1);
+    svg.append("g")
+      .call(d3.axisLeft(y));
 
-  var y = d3.scaleLinear()
-            .range([chartHeight - margin.bottom, margin.top])
-            .domain(yRange);
-
-  var xAxis = chartSvg.select(".x-axis");
-  var yAxis = chartSvg.select(".y-axis");
-
-  xAxis.call(d3.axisBottom(x).tickSizeOuter(0))
-       .select(".axis-label")
-       .attr("x", chartWidth / 2)
-       .attr("y", margin.bottom - 10)
-       .attr("fill", "black")
-       .attr("text-anchor", "middle")
-       .text("Year");
-
-  yAxis.transition()
-       .duration(750)
-       .call(d3.axisLeft(y))
-       .select(".axis-label")
-       .text(yAxisText);
-
-  var bars = chartSvg.selectAll(".bar")
-                     .data(data);
-
-  bars.enter().append("rect")
+    svg.selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("rect")
       .attr("class", "bar")
-      .attr("x", (d, i) => x(years[i]))
+      .attr("x", function(d, i) { return x(i); })
+      .attr("y", function(d) { return y(d); })
       .attr("width", x.bandwidth())
-      .attr("y", y(0))
-      .attr("height", 0)
-      .merge(bars)
-      .transition()
-      .duration(750)
-      .attr("y", d => y(d))
-      .attr("height", d => chartHeight - margin.bottom - y(d));
+      .attr("height", function(d) { return 300 - y(d); });
 
-  bars.exit().remove();
-}
-
-// Button functionality to switch between visualizations
-var pages = ["states", "chart", "chart", "chart", "counties", "new-page"];
-var currentPage = 0;
-
-function showPage(index) {
-  d3.select("#map-container").classed("active", index === 0 || index === 4 || index === 5);
-  d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
-  d3.select("#county-charts-container").classed("active", index === 5);
-  d3.select(".dropdown-container").classed("active", index === 5);
-
-  // Update class for map image
-  if (index === 0) {
-    d3.select("#map").attr("class", "states");
-  } else if (index === 4 || index === 5) {
-    d3.select("#map").attr("class", "counties");
-  } else {
-    d3.select("#map").attr("class", "");
+    svg.append("text")
+      .attr("x", 250)
+      .attr("y", -10)
+      .attr("text-anchor", "middle")
+      .text(label + " (2010-2022)");
   }
 
-  if (index === 1) {
-    updateChart(populationData, "Population", [3500000, 3700000], "chart");
-  } else if (index === 2) {
-    updateChart(employmentData, "Employment", [2100000, 2400000], "chart");
-  } else if (index === 3) {
-    updateChart(incomeData, "Per Capita Income", [60000, 85000], "chart");
-  }
-}
-
-d3.select("#next-button").on("click", function() {
-  currentPage = (currentPage + 1) % pages.length;
-  showPage(currentPage);
+  showPage(currentIndex); // Initial page display
 });
-
-d3.select("#prev-button").on("click", function() {
-  currentPage = (currentPage - 1 + pages.length) % pages.length;
-  showPage(currentPage);
-});
-
-showPage(currentPage); // Show the initial page
