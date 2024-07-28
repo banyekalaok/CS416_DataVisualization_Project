@@ -109,7 +109,7 @@ var pages = ["states", "chart", "chart", "chart", "counties", "new-page"];
 var currentPage = 0;
 
 function showPage(index) {
-  d3.select("#map").attr("class", pages[index]);
+  // d3.select("#map").attr("class", pages[index]);
   d3.select("#map-container").classed("hidden", index !== 0 && index !== 4 && index !== 5);
   d3.select("#chart-container").classed("hidden", index !== 1 && index !== 2 && index !== 3);
   d3.select(".dropdown-container").classed("hidden", index !== 4);
