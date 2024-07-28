@@ -173,6 +173,7 @@ function showPage(index) {
     d3.select("#map").attr("class", "counties");
     d3.select("#county-charts-container").classed("active", true);
     d3.select(".dropdown-container").classed("active", true);
+    updateCountyCharts(county);
   }
 }
 
