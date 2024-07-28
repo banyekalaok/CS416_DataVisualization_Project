@@ -112,6 +112,7 @@ function showPage(index) {
   d3.select("#map").attr("class", pages[index]);
   d3.select("#chart-container").classed("hidden", index === 0 || index === 4 || index === 5);
   d3.select(".dropdown-container").classed("hidden", index !== 4);
+  d3.select("#map-container").classed("hidden", index !== 0 && index !== 4 && index !== 5);
 
   if (index === 1) {
     updateChart(populationData, "Population", [3500000, 3700000]);
@@ -121,6 +122,7 @@ function showPage(index) {
     updateChart(incomeData, "Per Capita Income", [60000, 85000]);
   }
 }
+
 
 d3.select("#next-button").on("click", function() {
   currentPage = (currentPage + 1) % pages.length;
