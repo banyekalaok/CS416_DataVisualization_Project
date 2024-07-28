@@ -5,17 +5,11 @@
   <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022.">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #map-container, #chart-container {
+    #map-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
+      height: 600px; /* Adjust as necessary to fit your layout */
     }
     #map {
       background-size: cover;
@@ -178,67 +172,54 @@
                        .attr("x", (d, i) => x(years[i]))
                        .attr("y", d => y(d))
                        .attr("width", x.bandwidth())
-                       .attr("height", d => y(0) - y(d));
+                       .attr("height", d => chartHeight - margin.bottom - y(d));
 
-    function updateChart(newData, newLabel, yDomain) {
-      y.domain(yDomain).nice();
-      yAxis.transition().duration(1000).call(d3.axisLeft(y));
-      yAxis.select(".axis-label").text(newLabel);
+    function updateChart(data, yAxisText, yRange) {
+      y.domain(yRange);
 
-      bars.data(newData)
+      yAxis.transition()
+           .duration(750)
+           .call(d3.axisLeft(y));
+
+      yAxis.select(".axis-label")
+           .text(yAxisText);
+
+      bars.data(data)
           .transition()
-          .duration(1000)
+          .duration(750)
           .attr("y", d => y(d))
-          .attr("height", d => y(0) - y(d));
+          .attr("height", d => chartHeight - margin.bottom - y(d));
     }
 
-    // Page navigation
-    var currentPage = 1;
-    var totalPages = 6;
+    // Button functionality to switch between visualizations
+    var pages = ["states", "chart", "chart", "chart", "counties", "new-page"];
+    var currentPage = 0;
 
-    document.getElementById("prev-button").addEventListener("click", function() {
-      if (currentPage > 1) {
-        currentPage--;
-        updatePage();
-      }
-    });
+    function showPage(index) {
+      d3.select("#map").attr("class", pages[index]);
+      d3.select("#chart-container").classed("hidden", index === 0 || index === 4 || index === 5);
+      d3.select(".dropdown-container").classed("hidden", index !== 4);
 
-    document.getElementById("next-button").addEventListener("click", function() {
-      if (currentPage < totalPages) {
-        currentPage++;
-        updatePage();
-      }
-    });
-
-    function updatePage() {
-      var mapDiv = document.getElementById("map");
-      var chartContainer = document.getElementById("chart-container");
-      var dropdownContainer = document.querySelector(".dropdown-container");
-      
-      mapDiv.className = "";
-      chartContainer.classList.add("hidden");
-      dropdownContainer.classList.add("hidden");
-
-      if (currentPage === 1) {
-        mapDiv.classList.add("states");
-      } else if (currentPage === 4) {
-        mapDiv.classList.add("new-page");
-      } else if (currentPage === 5) {
-        mapDiv.classList.add("counties");
-        dropdownContainer.classList.remove("hidden");
-      } else if (currentPage === 2) {
-        chartContainer.classList.remove("hidden");
-        updateChart(populationData, "Connecticut Population", [3500000, 3700000]);
-      } else if (currentPage === 3) {
-        chartContainer.classList.remove("hidden");
-        updateChart(employmentData, "Connecticut Employment", [2000000, 2500000]);
-      } else if (currentPage === 6) {
-        chartContainer.classList.remove("hidden");
-        updateChart(incomeData, "Connecticut Per Capita Income", [60000, 90000]);
+      if (index === 1) {
+        updateChart(populationData, "Population", [3500000, 3700000]);
+      } else if (index === 2) {
+        updateChart(employmentData, "Employment", [2100000, 2400000]);
+      } else if (index === 3) {
+        updateChart(incomeData, "Per Capita Income", [60000, 85000]);
       }
     }
 
-    updatePage(); // Initial call to set up the first page
+    d3.select("#next-button").on("click", function() {
+      currentPage = (currentPage + 1) % pages.length;
+      showPage(currentPage);
+    });
+
+    d3.select("#prev-button").on("click", function() {
+      currentPage = (currentPage - 1 + pages.length) % pages.length;
+      showPage(currentPage);
+    });
+
+    showPage(currentPage); // Show the initial page
   </script>
 </body>
 </html>
