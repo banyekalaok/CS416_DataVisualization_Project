@@ -5,6 +5,18 @@
   <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022.">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #map-container, #chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
     #map {
       background-size: cover;
       background-position: center;
@@ -168,15 +180,10 @@
                        .attr("width", x.bandwidth())
                        .attr("height", d => y(0) - y(d));
 
-    function updateChart(newData, newLabel, newYDomain) {
-      y.domain(newYDomain).nice();
-
-      yAxis.transition()
-           .duration(1000)
-           .call(d3.axisLeft(y));
-
-      yAxis.select(".axis-label")
-           .text(newLabel);
+    function updateChart(newData, newLabel, yDomain) {
+      y.domain(yDomain).nice();
+      yAxis.transition().duration(1000).call(d3.axisLeft(y));
+      yAxis.select(".axis-label").text(newLabel);
 
       bars.data(newData)
           .transition()
@@ -185,64 +192,53 @@
           .attr("height", d => y(0) - y(d));
     }
 
-    var state = 0; // 0 for states map, 1 for population chart, 2 for employment chart, 3 for income chart, 4 for counties chart, 5 for new page
+    // Page navigation
+    var currentPage = 1;
+    var totalPages = 6;
 
-    function updateVisualization() {
-      if (state === 0) {
-        document.getElementById('map').classList.remove('counties', 'new-page');
-        document.getElementById('map').classList.add('states');
-        document.getElementById('map-container').classList.remove('hidden');
-        document.getElementById('chart-container').classList.add('hidden');
-        document.querySelector('.dropdown-container').classList.add('hidden');
-      } else if (state === 1) {
-        document.getElementById('map').classList.remove('counties', 'new-page');
-        document.getElementById('map').classList.add('states');
-        document.getElementById('map-container').classList.add('hidden');
-        document.getElementById('chart-container').classList.remove('hidden');
-        document.querySelector('.dropdown-container').classList.add('hidden');
-        updateChart(populationData, "Population", [3500000, 3700000]);
-      } else if (state === 2) {
-        document.getElementById('map').classList.remove('counties', 'new-page');
-        document.getElementById('map').classList.add('states');
-        document.getElementById('map-container').classList.add('hidden');
-        document.getElementById('chart-container').classList.remove('hidden');
-        document.querySelector('.dropdown-container').classList.add('hidden');
-        updateChart(employmentData, "Employment", [2100000, 2400000]);
-      } else if (state === 3) {
-        document.getElementById('map').classList.remove('counties', 'new-page');
-        document.getElementById('map').classList.add('states');
-        document.getElementById('map-container').classList.add('hidden');
-        document.getElementById('chart-container').classList.remove('hidden');
-        document.querySelector('.dropdown-container').classList.add('hidden');
-        updateChart(incomeData, "Per Capita Income", [60000, 85000]);
-      } else if (state === 5) {
-        document.getElementById('map').classList.remove('states', 'new-page');
-        document.getElementById('map').classList.add('counties');
-        document.getElementById('map-container').classList.remove('hidden');
-        document.getElementById('chart-container').classList.remove('hidden');
-        document.querySelector('.dropdown-container').classList.remove('hidden');
-      } else if (state === 4) {
-        document.getElementById('map').classList.remove('states', 'counties');
-        document.getElementById('map').classList.add('new-page');
-        document.getElementById('map-container').classList.remove('hidden');
-        document.getElementById('chart-container').classList.add('hidden');
-        document.querySelector('.dropdown-container').classList.add('hidden');
+    document.getElementById("prev-button").addEventListener("click", function() {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePage();
+      }
+    });
+
+    document.getElementById("next-button").addEventListener("click", function() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePage();
+      }
+    });
+
+    function updatePage() {
+      var mapDiv = document.getElementById("map");
+      var chartContainer = document.getElementById("chart-container");
+      var dropdownContainer = document.querySelector(".dropdown-container");
+      
+      mapDiv.className = "";
+      chartContainer.classList.add("hidden");
+      dropdownContainer.classList.add("hidden");
+
+      if (currentPage === 1) {
+        mapDiv.classList.add("states");
+      } else if (currentPage === 4) {
+        mapDiv.classList.add("new-page");
+      } else if (currentPage === 5) {
+        mapDiv.classList.add("counties");
+        dropdownContainer.classList.remove("hidden");
+      } else if (currentPage === 2) {
+        chartContainer.classList.remove("hidden");
+        updateChart(populationData, "Connecticut Population", [3500000, 3700000]);
+      } else if (currentPage === 3) {
+        chartContainer.classList.remove("hidden");
+        updateChart(employmentData, "Connecticut Employment", [2000000, 2500000]);
+      } else if (currentPage === 6) {
+        chartContainer.classList.remove("hidden");
+        updateChart(incomeData, "Connecticut Per Capita Income", [60000, 90000]);
       }
     }
 
-    // Button event listeners
-    document.getElementById('prev-button').addEventListener('click', function() {
-      state = (state - 1 + 6) % 6; // Adjusted for 6 states
-      updateVisualization();
-    });
-
-    document.getElementById('next-button').addEventListener('click', function() {
-      state = (state + 1) % 6; // Adjusted for 6 states
-      updateVisualization();
-    });
-
-    // Initialize the visualization
-    updateVisualization();
+    updatePage(); // Initial call to set up the first page
   </script>
 </body>
 </html>
