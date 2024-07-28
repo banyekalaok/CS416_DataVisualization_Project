@@ -6,7 +6,7 @@
   transition: all 0.5s ease; /* Smooth transition for visibility change */
 }
 
-#map-container.active, #chart-container.active, #dropdown-container.active {
+#map-container.active, #chart-container.active {
   display: flex; /* Show the container when active */
 }
 
@@ -58,8 +58,7 @@ path {
   font-size: 12px;
 }
 
-#dropdown-container {
-  display: none;
+.dropdown-container {
   text-align: center;
   margin-top: 20px;
 }
