@@ -31,8 +31,8 @@ function updateCountyChart(countyName) {
 }
 
 // Connecticut Population, Employment, and Per Capita Income Bar Charts
-var chartWidth = 800;
-var chartHeight = 400;
+var chartWidth = 1163;
+var chartHeight = 720;
 var margin = {top: 30, right: 20, bottom: 50, left: 50};
 
 var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
