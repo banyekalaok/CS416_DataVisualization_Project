@@ -101,6 +101,18 @@ button:hover {
   margin: 20px 0;
 }
 
+/* Specific style for the new county detail chart container */
+#county-detail-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#county-detail-chart {
+  width: 100%;
+  height: auto;
+}
+
 .county-chart {
   justify-content: center;
   gap: 20px;
