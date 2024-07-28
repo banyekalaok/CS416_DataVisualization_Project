@@ -57,3 +57,14 @@ path {
   text-align: center;
   margin-top: 20px;
 }
+#chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px; /* Default height for the chart */
+  transition: height 0.5s ease; /* Smooth transition for height change */
+}
+#chart {
+  width: 800px;
+  height: 400px;
+}
