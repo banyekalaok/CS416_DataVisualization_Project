@@ -176,7 +176,7 @@ function showPage(index) {
   d3.select(".dropdown-container").classed("active", false);
 
   // Set the 'active' class based on the index
-  if (index === 0 || index === 5) {
+  if (index === 0) {
     d3.select("#map-container").classed("active", true);
     d3.select("#map").attr("class", "states");
   } else if (index === 1) {
@@ -189,6 +189,9 @@ function showPage(index) {
     d3.select("#chart-container").classed("active", true);
     updateChart(incomeData, "Per Capita Income", [60000, 85000]);
   } else if (index === 4) {
+    d3.select("#map-container").classed("active", true);
+    d3.select("#map").attr("class", "counties");
+  } else if (index === 5) {
     d3.select("#map-container").classed("active", true);
     d3.select("#map").attr("class", "counties");
     d3.select("#county-charts-container").classed("active", true);
