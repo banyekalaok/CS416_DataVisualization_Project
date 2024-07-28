@@ -2,13 +2,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 600px; /* Adjust as necessary to fit your layout */
+  height: 600px; /* Default height for the map */
+  transition: height 0.5s ease; /* Smooth transition for height change */
 }
 #map {
   background-size: cover;
   background-position: center;
   width: 800px;
   height: 600px;
+  transition: width 0.5s ease, height 0.5s ease; /* Smooth transition for size change */
 }
 #map.states {
   background-image: url('ct-states.png'); /* Image for the first page */
@@ -18,6 +20,13 @@
 }
 #map.new-page {
   background-image: url('ct-counties.jpg'); /* Image for the new page */
+}
+.hidden #map-container {
+  height: 0; /* Collapse map container when hidden */
+}
+.hidden #map {
+  width: 0; /* Collapse map width when hidden */
+  height: 0; /* Collapse map height when hidden */
 }
 path {
   fill: lightblue;
