@@ -111,7 +111,7 @@ var currentPage = 0;
 function showPage(index) {
   d3.select("#map-container").classed("active", index === 0 || index === 4 || index === 5);
   d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
-  d3.select(".dropdown-container").classed("active", index === 4);
+  d3.select(".dropdown-container").classed("active", index === 5);
 
   // Update class for map image
   if (index === 0) {
