@@ -113,6 +113,13 @@ function showPage(index) {
   d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
   d3.select(".dropdown-container").classed("active", index === 4);
 
+  // Update image for pages five and six
+  if (index === 4 || index === 5) {
+    d3.select("#map-image").attr("src", "ct-counties.jpg");
+  } else {
+    d3.select("#map-image").attr("src", "ct-states.png");
+  }
+
   if (index === 1) {
     updateChart(populationData, "Population", [3500000, 3700000]);
   } else if (index === 2) {
