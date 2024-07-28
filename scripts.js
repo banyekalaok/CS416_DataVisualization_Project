@@ -113,11 +113,13 @@ function showPage(index) {
   d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
   d3.select(".dropdown-container").classed("active", index === 4);
 
-  // Update image for pages five and six
-  if (index === 4 || index === 5) {
-    d3.select("#map-image").attr("src", "ct-counties.jpg");
+  // Update class for map image
+  if (index === 0) {
+    d3.select("#map").attr("class", "states");
+  } else if (index === 4 || index === 5) {
+    d3.select("#map").attr("class", "counties");
   } else {
-    d3.select("#map-image").attr("src", "ct-states.png");
+    d3.select("#map").attr("class", "");
   }
 
   if (index === 1) {
