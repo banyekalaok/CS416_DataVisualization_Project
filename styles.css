@@ -74,6 +74,14 @@ button:hover {
   border-radius: 5px;
 }
 
+#map.states {
+  background-image: url('ct-states.png'); 
+}
+
+#map.counties {
+  background-image: url('ct-counties.jpg'); 
+}
+
 #chart-container {
   text-align: center;
 }
