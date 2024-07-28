@@ -58,12 +58,12 @@ dropdown.on("change", function() {
 });
 
 // Update charts for the selected county
-function updateCountyCharts(countyName) {
-  var selectedData = countyData[countyName];
-  updateChart(selectedData.population, countyName + " Population", [100000, 400000]);
-  updateChart(selectedData.employment, countyName + " Employment", [100000, 300000]);
-  updateChart(selectedData.income, countyName + " Income", [50000, 70000]);
-}
+// function updateCountyCharts(countyName) {
+//   var selectedData = countyData[countyName];
+//   updateChart(selectedData.population, countyName + " Population", [100000, 400000]);
+//   updateChart(selectedData.employment, countyName + " Employment", [100000, 300000]);
+//   updateChart(selectedData.income, countyName + " Income", [50000, 70000]);
+// }
 
 // // Update existing functions to handle multiple charts
 // // Connecticut Population, Employment, and Per Capita Income Bar Charts
@@ -138,6 +138,9 @@ function updateChart(data, yAxisText, yRange) {
   var chartSvg = d3.select("#chart")
                    .attr("width", chartWidth)
                    .attr("height", chartHeight);
+  
+      // Clear the existing chart elements
+  chartSvg.selectAll("*").remove();
   
   var x = d3.scaleBand()
             .domain(years)
@@ -231,7 +234,7 @@ function showPage(index) {
     d3.select("#map").attr("class", "counties");
     d3.select("#county-charts-container").classed("active", true);
     d3.select(".dropdown-container").classed("active", true);
-    updateCountyCharts(county);
+    // updateCountyCharts(county);
   }
 }
 
