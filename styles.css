@@ -1,69 +1,68 @@
-#map-container {
-  display: flex;
+/* styles.css */
+#map-container, #chart-container {
+  display: none; /* Hide both containers by default */
   justify-content: center;
   align-items: center;
-  height: 600px; /* Default height for the map */
-  transition: height 0.5s ease; /* Smooth transition for height change */
+  transition: all 0.5s ease; /* Smooth transition for visibility change */
 }
+
+#map-container.active, #chart-container.active {
+  display: flex; /* Show the container when active */
+}
+
 #map {
   background-size: cover;
   background-position: center;
   width: 800px;
   height: 600px;
-  transition: width 0.5s ease, height 0.5s ease; /* Smooth transition for size change */
+  transition: all 0.5s ease; /* Smooth transition for size change */
 }
+
 #map.states {
   background-image: url('ct-states.png'); /* Image for the first page */
 }
+
 #map.counties {
   background-image: url('ct-counties.jpg'); /* Image for the fifth page */
 }
+
 #map.new-page {
   background-image: url('ct-counties.jpg'); /* Image for the new page */
 }
-.hidden #map-container {
-  height: 0; /* Collapse map container when hidden */
-}
-.hidden #map {
-  width: 0; /* Collapse map width when hidden */
-  height: 0; /* Collapse map height when hidden */
-}
+
 path {
   fill: lightblue;
   stroke: black;
 }
+
 .button-container {
   text-align: center;
   margin-top: 20px;
 }
+
 .button-container button {
   padding: 10px 20px;
   margin: 5px;
   font-size: 16px;
 }
+
 .bar {
   fill: steelblue;
 }
+
 .bar:hover {
   fill: darkblue;
 }
+
 .axis-label {
   font-size: 12px;
 }
-.hidden {
-  display: none;
-}
+
 .dropdown-container {
   text-align: center;
   margin-top: 20px;
 }
-#chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400px; /* Default height for the chart */
-  transition: height 0.5s ease; /* Smooth transition for height change */
-}
+
 #chart {
   width: 800px;
   height: 400px;
