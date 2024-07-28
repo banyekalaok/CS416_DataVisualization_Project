@@ -1,5 +1,5 @@
 /* styles.css */
-#map-container, #chart-container, #dropdown-container {
+#map-container, #chart-container {
   display: none; /* Hide both containers by default */
   justify-content: center;
   align-items: center;
@@ -59,6 +59,7 @@ path {
 }
 
 .dropdown-container {
+  display: none;
   text-align: center;
   margin-top: 20px;
 }
