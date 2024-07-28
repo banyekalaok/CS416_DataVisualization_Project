@@ -65,65 +65,123 @@ function updateCountyCharts(countyName) {
   updateChart(selectedData.income, countyName + " Income", [50000, 70000]);
 }
 
-// Update existing functions to handle multiple charts
-// Connecticut Population, Employment, and Per Capita Income Bar Charts
-var chartWidth = 800;
-var chartHeight = 400;
-var margin = {top: 30, right: 20, bottom: 50, left: 50};
+// // Update existing functions to handle multiple charts
+// // Connecticut Population, Employment, and Per Capita Income Bar Charts
+// var chartWidth = 800;
+// var chartHeight = 400;
+// var margin = {top: 30, right: 20, bottom: 50, left: 50};
 
-var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
-var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
-var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
-var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+// var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+// var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
+// var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
+// var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
-var chartSvg = d3.select("#chart")
-                 .attr("width", chartWidth)
-                 .attr("height", chartHeight);
+// var chartSvg = d3.select("#chart")
+//                  .attr("width", chartWidth)
+//                  .attr("height", chartHeight);
 
-var x = d3.scaleBand()
-          .domain(years)
-          .range([margin.left, chartWidth - margin.right])
-          .padding(0.1);
+// var x = d3.scaleBand()
+//           .domain(years)
+//           .range([margin.left, chartWidth - margin.right])
+//           .padding(0.1);
 
-var y = d3.scaleLinear()
-          .range([chartHeight - margin.bottom, margin.top]);
+// var y = d3.scaleLinear()
+//           .range([chartHeight - margin.bottom, margin.top]);
 
-var yAxisLabel = "Population";
+// var yAxisLabel = "Population";
 
-chartSvg.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0))
-        .append("text")
-        .attr("class", "axis-label")
-        .attr("x", chartWidth / 2)
-        .attr("y", margin.bottom - 10)
-        .attr("fill", "black")
-        .attr("text-anchor", "middle")
-        .text("Year");
+// chartSvg.append("g")
+//         .attr("class", "x-axis")
+//         .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
+//         .call(d3.axisBottom(x).tickSizeOuter(0))
+//         .append("text")
+//         .attr("class", "axis-label")
+//         .attr("x", chartWidth / 2)
+//         .attr("y", margin.bottom - 10)
+//         .attr("fill", "black")
+//         .attr("text-anchor", "middle")
+//         .text("Year");
 
-var yAxis = chartSvg.append("g")
-                    .attr("class", "y-axis")
-                    .attr("transform", `translate(${margin.left},0)`);
+// var yAxis = chartSvg.append("g")
+//                     .attr("class", "y-axis")
+//                     .attr("transform", `translate(${margin.left},0)`);
 
-yAxis.append("text")
-     .attr("class", "axis-label")
-     .attr("x", -margin.left)
-     .attr("y", margin.top - 10)
-     .attr("fill", "black")
-     .attr("text-anchor", "start")
-     .text(yAxisLabel);
+// yAxis.append("text")
+//      .attr("class", "axis-label")
+//      .attr("x", -margin.left)
+//      .attr("y", margin.top - 10)
+//      .attr("fill", "black")
+//      .attr("text-anchor", "start")
+//      .text(yAxisLabel);
 
-var bars = chartSvg.selectAll(".bar")
-                   .data(populationData)
-                   .enter().append("rect")
-                   .attr("class", "bar")
-                   .attr("x", (d, i) => x(years[i]))
-                   .attr("y", d => y(d))
-                   .attr("width", x.bandwidth())
-                   .attr("height", d => chartHeight - margin.bottom - y(d));
+// var bars = chartSvg.selectAll(".bar")
+//                    .data(populationData)
+//                    .enter().append("rect")
+//                    .attr("class", "bar")
+//                    .attr("x", (d, i) => x(years[i]))
+//                    .attr("y", d => y(d))
+//                    .attr("width", x.bandwidth())
+//                    .attr("height", d => chartHeight - margin.bottom - y(d));
 
 function updateChart(data, yAxisText, yRange) {
+  // Update existing functions to handle multiple charts
+  // Connecticut Population, Employment, and Per Capita Income Bar Charts
+  var chartWidth = 800;
+  var chartHeight = 400;
+  var margin = {top: 30, right: 20, bottom: 50, left: 50};
+  
+  var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+  var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
+  var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
+  var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+  
+  var chartSvg = d3.select("#chart")
+                   .attr("width", chartWidth)
+                   .attr("height", chartHeight);
+  
+  var x = d3.scaleBand()
+            .domain(years)
+            .range([margin.left, chartWidth - margin.right])
+            .padding(0.1);
+  
+  var y = d3.scaleLinear()
+            .range([chartHeight - margin.bottom, margin.top]);
+  
+  var yAxisLabel = "Population";
+  
+  chartSvg.append("g")
+          .attr("class", "x-axis")
+          .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
+          .call(d3.axisBottom(x).tickSizeOuter(0))
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("x", chartWidth / 2)
+          .attr("y", margin.bottom - 10)
+          .attr("fill", "black")
+          .attr("text-anchor", "middle")
+          .text("Year");
+  
+  var yAxis = chartSvg.append("g")
+                      .attr("class", "y-axis")
+                      .attr("transform", `translate(${margin.left},0)`);
+  
+  yAxis.append("text")
+       .attr("class", "axis-label")
+       .attr("x", -margin.left)
+       .attr("y", margin.top - 10)
+       .attr("fill", "black")
+       .attr("text-anchor", "start")
+       .text(yAxisLabel);
+  
+  var bars = chartSvg.selectAll(".bar")
+                     .data(populationData)
+                     .enter().append("rect")
+                     .attr("class", "bar")
+                     .attr("x", (d, i) => x(years[i]))
+                     .attr("y", d => y(d))
+                     .attr("width", x.bandwidth())
+                     .attr("height", d => chartHeight - margin.bottom - y(d));
+  
   y.domain(yRange);
 
   yAxis.transition()
