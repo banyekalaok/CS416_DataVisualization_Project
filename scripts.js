@@ -58,12 +58,12 @@ dropdown.on("change", function() {
 });
 
 // Update charts for the selected county
-// function updateCountyCharts(countyName) {
-//   var selectedData = countyData[countyName];
-//   updateChart(selectedData.population, countyName + " Population", [100000, 400000]);
-//   updateChart(selectedData.employment, countyName + " Employment", [100000, 300000]);
-//   updateChart(selectedData.income, countyName + " Income", [50000, 70000]);
-// }
+function updateCountyCharts(countyName) {
+  var selectedData = countyData[countyName];
+  updateChart(selectedData.population, countyName + " Population", [100000, 400000]);
+  updateChart(selectedData.employment, countyName + " Employment", [100000, 300000]);
+  updateChart(selectedData.income, countyName + " Income", [50000, 70000]);
+}
 
 // Update existing functions to handle multiple charts
 // Connecticut Population, Employment, and Per Capita Income Bar Charts
