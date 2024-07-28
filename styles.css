@@ -58,7 +58,7 @@ path {
   font-size: 12px;
 }
 
-.dropdown-container {
+#dropdown-container {
   display: none;
   text-align: center;
   margin-top: 20px;
