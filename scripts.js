@@ -1,20 +1,19 @@
-// Dummy data for counties will be updated with actual data from the CSV file
-var countyData = {};
-
-// Read data from CSV and populate the countyData object
 d3.csv("ct_emp_inc.csv").then(function(data) {
+  // Process the data and assign it to countyData object
   data.forEach(function(d) {
-    var county = d.county;
-    if (!countyData[county]) {
-      countyData[county] = {
-        population: [],
-        employment: [],
-        income: []
-      };
-    }
-    countyData[county].population.push(+d.population);
-    countyData[county].employment.push(+d.employment);
-    countyData[county].income.push(+d.income);
+    d.year = +d.year;
+    d.population = +d.population;
+    d.employment = +d.employment;
+    d.income = +d.income;
+  });
+
+  var nestedData = d3.nest()
+    .key(function(d) { return d.county; })
+    .entries(data);
+
+  nestedData.forEach(function(county) {
+    var countyName = county.key;
+    countyData[countyName] = county.values;
   });
 
   // Populate the dropdown menu with county names
@@ -33,12 +32,15 @@ d3.csv("ct_emp_inc.csv").then(function(data) {
   });
 });
 
-// Function to update all three charts for the selected county
 function updateCountyCharts(countyName) {
   var selectedData = countyData[countyName];
-  updateChart(selectedData.population, countyName + " Population", [d3.min(selectedData.population) - 10000, d3.max(selectedData.population) + 10000], "population-chart");
-  updateChart(selectedData.employment, countyName + " Employment", [d3.min(selectedData.employment) - 10000, d3.max(selectedData.employment) + 10000], "employment-chart");
-  updateChart(selectedData.income, countyName + " Income", [d3.min(selectedData.income) - 5000, d3.max(selectedData.income) + 5000], "income-chart");
+  var populationData = selectedData.map(d => d.population);
+  var employmentData = selectedData.map(d => d.employment);
+  var incomeData = selectedData.map(d => d.income);
+
+  updateChart(populationData, countyName + " Population", [100000, 400000]);
+  updateChart(employmentData, countyName + " Employment", [50000, 250000]);
+  updateChart(incomeData, countyName + " Per Capita Income", [30000, 80000]);
 }
 
 // Connecticut Population, Employment, and Per Capita Income Bar Charts
@@ -95,23 +97,21 @@ var bars = chartSvg.selectAll(".bar")
                    .attr("width", x.bandwidth())
                    .attr("height", d => chartHeight - margin.bottom - y(d));
 
-function updateChart(data, yAxisText, yRange, chartId) {
+function updateChart(data, yAxisText, yRange) {
   y.domain(yRange);
 
-  d3.select("#" + chartId + " .y-axis")
-    .transition()
-    .duration(750)
-    .call(d3.axisLeft(y));
+  yAxis.transition()
+       .duration(750)
+       .call(d3.axisLeft(y));
 
-  d3.select("#" + chartId + " .y-axis .axis-label")
-    .text(yAxisText);
+  yAxis.select(".axis-label")
+       .text(yAxisText);
 
-  d3.selectAll("#" + chartId + " .bar")
-    .data(data)
-    .transition()
-    .duration(750)
-    .attr("y", d => y(d))
-    .attr("height", d => chartHeight - margin.bottom - y(d));
+  bars.data(data)
+      .transition()
+      .duration(750)
+      .attr("y", d => y(d))
+      .attr("height", d => chartHeight - margin.bottom - y(d));
 }
 
 // Button functionality to switch between visualizations
@@ -120,7 +120,7 @@ var currentPage = 0;
 
 function showPage(index) {
   d3.select("#map-container").classed("active", index === 0 || index === 4 || index === 5);
-  d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3 || index === 5);
+  d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
   d3.select(".dropdown-container").classed("active", index === 5);
 
   // Update class for map image
@@ -133,11 +133,11 @@ function showPage(index) {
   }
 
   if (index === 1) {
-    updateChart(populationData, "Population", [3500000, 3700000], "chart");
+    updateChart(populationData, "Population", [3500000, 3700000]);
   } else if (index === 2) {
-    updateChart(employmentData, "Employment", [2100000, 2400000], "chart");
+    updateChart(employmentData, "Employment", [2100000, 2400000]);
   } else if (index === 3) {
-    updateChart(incomeData, "Per Capita Income", [60000, 85000], "chart");
+    updateChart(incomeData, "Per Capita Income", [60000, 85000]);
   }
 }
 
