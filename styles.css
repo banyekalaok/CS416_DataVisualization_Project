@@ -17,8 +17,8 @@
 #map {
   background-size: cover;
   background-position: center;
-  width: 800px;
-  height: 400px;
+  width: 1163px;
+  height: 720px;
   transition: all 0.5s ease; /* Smooth transition for size change */
 }
 
@@ -69,8 +69,8 @@ path {
 }
 
 #chart {
-  width: 800px;
-  height: 400px;
+  width: 1163px;
+  height: 720px;
 }
 
 .hidden {
