@@ -1,94 +1,128 @@
-/* styles.css */
-
-#county-charts-container {
-  display: none; /* Hide by default */
-  flex-direction: column;
-  align-items: center;
-  transition: all 0.5s ease; /* Smooth transition for visibility change */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
 }
 
-#county-charts-container.active {
-  display: flex; /* Show the container when active */
+h1 {
+  text-align: center;
+  color: #333;
+  padding: 20px 0;
 }
 
-.county-chart {
-  margin-bottom: 20px;
-}
-
-#map-container, #chart-container {
-  display: none; /* Hide both containers by default */
-  justify-content: center;
-  align-items: center;
-  transition: all 0.5s ease; /* Smooth transition for visibility change */
-}
-
-#map-container.active, #chart-container.active {
-  display: flex; /* Show the container when active */
-}
-
-.dropdown-container.active {
-  display: block;
-}
-
-#map {
-  background-size: cover;
-  background-position: center;
-  width: 1163px;
-  height: 720px;
-  transition: all 0.5s ease; /* Smooth transition for size change */
-}
-
-#map.states {
-  background-image: url('ct-states.png'); /* Image for the first page */
-}
-
-#map.counties {
-  background-image: url('ct-counties.jpg'); /* Image for the fifth page */
-}
-
-#map.new-page {
-  background-image: url('ct-counties.jpg'); /* Image for the new page */
-}
-
-path {
-  fill: lightblue;
-  stroke: black;
+p {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .button-container {
   text-align: center;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
-.button-container button {
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
   padding: 10px 20px;
   margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
   font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.visualization {
+  display: none;
+}
+
+.visualization.active {
+  display: block;
+  text-align: center;
+  padding: 20px;
+}
+
+.dropdown-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#county-dropdown {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#county-dropdown option {
+  padding: 10px;
+}
+
+#map {
+  width: 100%;
+  height: 500px;
+  background-image: url('map-image-URL.jpg'); /* Replace with actual map image URL */
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#chart-container {
+  text-align: center;
+}
+
+#chart {
+  width: 100%;
+  height: 400px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+.county-chart {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.county-chart div {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .bar {
   fill: steelblue;
 }
 
-.bar:hover {
-  fill: darkblue;
-}
-
-.axis-label {
+.axis text {
   font-size: 12px;
 }
 
-.dropdown-container {
-  display: none;
-  text-align: center;
-  margin-top: 20px;
-}
-
-#chart {
-  width: 1163px;
-  height: 720px;
+.axis path,
+.axis line {
+  fill: none;
+  shape-rendering: crispEdges;
 }
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 768px) {
+  .county-chart {
+    flex-direction: column;
+  }
 }
