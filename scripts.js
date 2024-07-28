@@ -123,6 +123,23 @@ var bars = chartSvg.selectAll(".bar")
                    .attr("width", x.bandwidth())
                    .attr("height", d => chartHeight - margin.bottom - y(d));
 
+// function updateChart(data, yAxisText, yRange) {
+//   y.domain(yRange);
+
+//   yAxis.transition()
+//        .duration(750)
+//        .call(d3.axisLeft(y));
+
+//   yAxis.select(".axis-label")
+//        .text(yAxisText);
+
+//   bars.data(data)
+//       .transition()
+//       .duration(750)
+//       .attr("y", d => y(d))
+//       .attr("height", d => chartHeight - margin.bottom - y(d));
+// }
+
 function updateChart(data, yAxisText, yRange) {
   y.domain(yRange);
 
@@ -133,11 +150,40 @@ function updateChart(data, yAxisText, yRange) {
   yAxis.select(".axis-label")
        .text(yAxisText);
 
-  bars.data(data)
+  var bars = chartSvg.selectAll(".bar")
+                     .data(data);
+
+  bars.enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", (d, i) => x(years[i]))
+      .attr("width", x.bandwidth())
+      .merge(bars)
       .transition()
       .duration(750)
       .attr("y", d => y(d))
       .attr("height", d => chartHeight - margin.bottom - y(d));
+
+  bars.exit().remove();
+
+  // Add annotations
+  var annotations = chartSvg.selectAll(".annotation")
+                            .data(data);
+
+  annotations.enter().append("text")
+              .attr("class", "annotation")
+              .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+              .attr("y", d => y(d) - 5) // Adjust as needed to position the annotation
+              .attr("text-anchor", "middle")
+              .text(d => d)
+              .style("font-size", "12px")
+              .style("fill", "black")
+              .merge(annotations)
+              .transition()
+              .duration(750)
+              .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+              .attr("y", d => y(d) - 5); // Adjust as needed
+
+  annotations.exit().remove();
 }
 
 function updateCountyCharts(county) {
@@ -211,6 +257,25 @@ function updateCountyCharts(county) {
         .attr("height", d => chartHeight - margin.bottom - y(d));
 
     bars.exit().remove();
+
+    var annotations = countyChartSvg.selectAll(".annotation")
+                                  .data(data);
+
+    annotations.enter().append("text")
+                .attr("class", "annotation")
+                .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+                .attr("y", d => y(d) - 5) // Adjust as needed to position the annotation
+                .attr("text-anchor", "middle")
+                .text(d => d)
+                .style("font-size", "12px")
+                .style("fill", "black")
+                .merge(annotations)
+                .transition()
+                .duration(750)
+                .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+                .attr("y", d => y(d) - 5); // Adjust as needed
+  
+    annotations.exit().remove();
   }
 
   // Initially display population data
