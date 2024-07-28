@@ -57,6 +57,12 @@ button:hover {
   display: block;
 }
 
+.annotation {
+  font-size: 12px;
+  fill: black;
+  text-anchor: middle;
+}
+
 #county-dropdown {
   padding: 10px;
   font-size: 16px;
