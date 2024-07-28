@@ -88,7 +88,7 @@ var bars = chartSvg.selectAll(".bar")
                    .attr("height", d => chartHeight - margin.bottom - y(d));
 
 function updateChart(data, yAxisText, yRange) {
-  y.domain([d3.min(data) * 0.9, d3.max(data) * 1.1]);
+  y.domain(yRange);
 
   yAxis.transition()
        .duration(750)
