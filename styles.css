@@ -1,4 +1,20 @@
 /* styles.css */
+
+#county-charts-container {
+  display: none; /* Hide by default */
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.5s ease; /* Smooth transition for visibility change */
+}
+
+#county-charts-container.active {
+  display: flex; /* Show the container when active */
+}
+
+.county-chart {
+  margin-bottom: 20px;
+}
+
 #map-container, #chart-container {
   display: none; /* Hide both containers by default */
   justify-content: center;
