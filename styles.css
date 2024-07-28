@@ -83,6 +83,7 @@ button:hover {
 }
 
 #chart-container {
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 400px;
