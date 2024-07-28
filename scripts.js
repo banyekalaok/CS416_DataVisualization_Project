@@ -141,6 +141,10 @@ function updateChart(data, yAxisText, yRange) {
   
       // Clear the existing chart elements
   chartSvg.selectAll("*").remove();
+
+  var chartSvg = d3.select("#chart")
+                 .attr("width", chartWidth)
+                 .attr("height", chartHeight);
   
   var x = d3.scaleBand()
             .domain(years)
