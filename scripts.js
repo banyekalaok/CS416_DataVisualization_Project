@@ -60,80 +60,86 @@ dropdown.on("change", function() {
 // Update charts for the selected county
 function updateCountyCharts(countyName) {
   var selectedData = countyData[countyName];
-  updateChart(selectedData.population, countyName + " Population", [100000, 400000], "county-population-chart");
-  updateChart(selectedData.employment, countyName + " Employment", [100000, 300000], "county-employment-chart");
-  updateChart(selectedData.income, countyName + " Income", [50000, 70000], "county-income-chart");
+  updateChart(selectedData.population, countyName + " Population", [100000, 400000]);
+  updateChart(selectedData.employment, countyName + " Employment", [100000, 300000]);
+  updateChart(selectedData.income, countyName + " Income", [50000, 70000]);
 }
 
 // Update existing functions to handle multiple charts
-function updateChart(data, yAxisText, yRange, chartId) {
-  var chartSvg = d3.select("#" + chartId + " svg");
-  var margin = {top: 20, right: 30, bottom: 30, left: 40};
-  var chartWidth = 800 - margin.left - margin.right;
-  var chartHeight = 400 - margin.top - margin.bottom;
-  var years = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"];
+// Connecticut Population, Employment, and Per Capita Income Bar Charts
+var chartWidth = 800;
+var chartHeight = 400;
+var margin = {top: 30, right: 20, bottom: 50, left: 50};
 
-  if (chartSvg.empty()) {
-    chartSvg = d3.select("#" + chartId)
-                 .append("svg")
-                 .attr("width", chartWidth + margin.left + margin.right)
-                 .attr("height", chartHeight + margin.top + margin.bottom)
-               .append("g")
-                 .attr("transform", `translate(${margin.left},${margin.top})`);
+var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
+var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
+var incomeData = [61392, 62964, 63555, 61999, 64482, 66220, 67550, 69146, 72157, 74173, 77383, 80691, 82938];
+var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
-    chartSvg.append("g")
-            .attr("class", "x-axis")
-            .attr("transform", `translate(0,${chartHeight})`);
+var chartSvg = d3.select("#chart")
+                 .attr("width", chartWidth)
+                 .attr("height", chartHeight);
 
-    chartSvg.append("g")
-            .attr("class", "y-axis");
+var x = d3.scaleBand()
+          .domain(years)
+          .range([margin.left, chartWidth - margin.right])
+          .padding(0.1);
 
-    chartSvg.append("text")
-            .attr("class", "axis-label")
-            .attr("x", chartWidth / 2)
-            .attr("y", chartHeight + margin.bottom - 10)
-            .attr("fill", "black")
-            .attr("text-anchor", "middle")
-            .text("Year");
-  }
+var y = d3.scaleLinear()
+          .range([chartHeight - margin.bottom, margin.top]);
 
-  var x = d3.scaleBand()
-            .domain(years)
-            .range([0, chartWidth])
-            .padding(0.1);
+var yAxisLabel = "Population";
 
-  var y = d3.scaleLinear()
-            .range([chartHeight, 0])
-            .domain(yRange);
+chartSvg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0))
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("x", chartWidth / 2)
+        .attr("y", margin.bottom - 10)
+        .attr("fill", "black")
+        .attr("text-anchor", "middle")
+        .text("Year");
 
-  var xAxis = chartSvg.select(".x-axis");
-  var yAxis = chartSvg.select(".y-axis");
+var yAxis = chartSvg.append("g")
+                    .attr("class", "y-axis")
+                    .attr("transform", `translate(${margin.left},0)`);
 
-  xAxis.call(d3.axisBottom(x).tickSizeOuter(0));
+yAxis.append("text")
+     .attr("class", "axis-label")
+     .attr("x", -margin.left)
+     .attr("y", margin.top - 10)
+     .attr("fill", "black")
+     .attr("text-anchor", "start")
+     .text(yAxisLabel);
+
+var bars = chartSvg.selectAll(".bar")
+                   .data(populationData)
+                   .enter().append("rect")
+                   .attr("class", "bar")
+                   .attr("x", (d, i) => x(years[i]))
+                   .attr("y", d => y(d))
+                   .attr("width", x.bandwidth())
+                   .attr("height", d => chartHeight - margin.bottom - y(d));
+
+function updateChart(data, yAxisText, yRange) {
+  y.domain(yRange);
 
   yAxis.transition()
        .duration(750)
-       .call(d3.axisLeft(y))
-       .select(".axis-label")
+       .call(d3.axisLeft(y));
+
+  yAxis.select(".axis-label")
        .text(yAxisText);
 
-  var bars = chartSvg.selectAll(".bar")
-                     .data(data);
-
-  bars.enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", (d, i) => x(years[i]))
-      .attr("width", x.bandwidth())
-      .attr("y", chartHeight)
-      .attr("height", 0)
-      .merge(bars)
+  bars.data(data)
       .transition()
       .duration(750)
       .attr("y", d => y(d))
-      .attr("height", d => chartHeight - y(d));
-
-  bars.exit().remove();
+      .attr("height", d => chartHeight - margin.bottom - y(d));
 }
+
 
 // Button functionality to switch between visualizations
 var pages = ["map", "population", "employment", "income", "counties", "new-page"];
@@ -154,11 +160,11 @@ function showPage(index) {
   }
 
   if (index === 1) {
-    updateChart(populationData, "Population", [3500000, 3700000], "chart");
+    updateChart(populationData, "Population", [3500000, 3700000]);
   } else if (index === 2) {
-    updateChart(employmentData, "Employment", [2100000, 2400000], "chart");
+    updateChart(employmentData, "Employment", [2100000, 2400000]);
   } else if (index === 3) {
-    updateChart(incomeData, "Per Capita Income", [60000, 85000], "chart");
+    updateChart(incomeData, "Per Capita Income", [60000, 85000]);
   }
 }
 
