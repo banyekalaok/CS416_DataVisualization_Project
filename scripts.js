@@ -92,7 +92,7 @@ var yAxisLabel = "Population";
 
 chartSvg.append("g")
         .attr("class", "x-axis")
-        .attr("transform", translate(0,${chartHeight - margin.bottom}))
+        .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
         .call(d3.axisBottom(x).tickSizeOuter(0))
         .append("text")
         .attr("class", "axis-label")
@@ -104,7 +104,7 @@ chartSvg.append("g")
 
 var yAxis = chartSvg.append("g")
                     .attr("class", "y-axis")
-                    .attr("transform", translate(${margin.left},0));
+                    .attr("transform", `translate(${margin.left},0)`);
 
 yAxis.append("text")
      .attr("class", "axis-label")
@@ -173,6 +173,7 @@ function showPage(index) {
     d3.select("#map").attr("class", "counties");
     d3.select("#county-charts-container").classed("active", true);
     d3.select(".dropdown-container").classed("active", true);
+    updateCountyCharts(county);
   }
 }
 
