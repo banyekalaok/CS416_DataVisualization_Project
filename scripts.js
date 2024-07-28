@@ -1,117 +1,136 @@
-d3.csv("ct_emp_inc.csv").then(function(data) {
-  // Process the data and assign it to countyData object
-  data.forEach(function(d) {
-    d.year = +d.year;
-    d.population = +d.population;
-    d.employment = +d.employment;
-    d.income = +d.income;
-  });
-
-  var nestedData = d3.nest()
-    .key(function(d) { return d.county; })
-    .entries(data);
-
-  nestedData.forEach(function(county) {
-    var countyName = county.key;
-    countyData[countyName] = county.values;
-  });
-
-  // Populate the dropdown menu with county names
-  var dropdown = d3.select("#county-dropdown");
-  for (var county in countyData) {
-    dropdown.append("option")
-            .attr("value", county)
-            .text(county);
+// Dummy data for counties (for dropdown functionality)
+var countyData = {
+  "Fairfield": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "Hartford": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "Litchfield": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "Middlesex": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "New Haven": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "New London": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "Tolland": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
+  },
+  "Windham": {
+    population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+    employment: [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+    income: [60000, 60500, 61000, 61500, 62000, 62500, 63000, 63500, 64000, 64500, 65000, 65500, 66000]
   }
+};
 
-  dropdown.on("change", function() {
-    var selectedCounty = this.value;
-    if (selectedCounty) {
-      updateCountyCharts(selectedCounty);
-    }
-  });
+// Populate the dropdown menu with county names
+var dropdown = d3.select("#county-dropdown");
+for (var county in countyData) {
+  dropdown.append("option")
+          .attr("value", county)
+          .text(county);
+}
+
+dropdown.on("change", function() {
+  var selectedCounty = this.value;
+  if (selectedCounty) {
+    updateCountyCharts(selectedCounty);
+  }
 });
 
 function updateCountyCharts(countyName) {
   var selectedData = countyData[countyName];
-  var populationData = selectedData.map(d => d.population);
-  var employmentData = selectedData.map(d => d.employment);
-  var incomeData = selectedData.map(d => d.income);
-
-  updateChart(populationData, countyName + " Population", [100000, 400000]);
-  updateChart(employmentData, countyName + " Employment", [50000, 250000]);
-  updateChart(incomeData, countyName + " Per Capita Income", [30000, 80000]);
+  updateChart(selectedData.population, countyName + " Population", [100000, 400000], "county-population-chart");
+  updateChart(selectedData.employment, countyName + " Employment", [100000, 300000], "county-employment-chart");
+  updateChart(selectedData.income, countyName + " Income", [50000, 70000], "county-income-chart");
 }
 
-// Connecticut Population, Employment, and Per Capita Income Bar Charts
-var chartWidth = 1163;
-var chartHeight = 720;
-var margin = {top: 30, right: 20, bottom: 50, left: 50};
+// Update existing functions to handle multiple charts
+function updateChart(data, yAxisText, yRange, chartId) {
+  var chartSvg = d3.select("#" + chartId + " svg");
 
-var years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-
-var chartSvg = d3.select("#chart")
+  if (chartSvg.empty()) {
+    chartSvg = d3.select("#" + chartId)
+                 .append("svg")
                  .attr("width", chartWidth)
                  .attr("height", chartHeight);
 
-var x = d3.scaleBand()
-          .domain(years)
-          .range([margin.left, chartWidth - margin.right])
-          .padding(0.1);
+    chartSvg.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0,${chartHeight - margin.bottom})`);
 
-var y = d3.scaleLinear()
-          .range([chartHeight - margin.bottom, margin.top]);
+    chartSvg.append("g")
+            .attr("class", "y-axis")
+            .attr("transform", `translate(${margin.left},0)`)
+            .append("text")
+            .attr("class", "axis-label")
+            .attr("x", -margin.left)
+            .attr("y", margin.top - 10)
+            .attr("fill", "black")
+            .attr("text-anchor", "start");
+  }
 
-var yAxisLabel = "Population";
+  var x = d3.scaleBand()
+            .domain(years)
+            .range([margin.left, chartWidth - margin.right])
+            .padding(0.1);
 
-chartSvg.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", `translate(0,${chartHeight - margin.bottom})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0))
-        .append("text")
-        .attr("class", "axis-label")
-        .attr("x", chartWidth / 2)
-        .attr("y", margin.bottom - 10)
-        .attr("fill", "black")
-        .attr("text-anchor", "middle")
-        .text("Year");
+  var y = d3.scaleLinear()
+            .range([chartHeight - margin.bottom, margin.top])
+            .domain(yRange);
 
-var yAxis = chartSvg.append("g")
-                    .attr("class", "y-axis")
-                    .attr("transform", `translate(${margin.left},0)`);
+  var xAxis = chartSvg.select(".x-axis");
+  var yAxis = chartSvg.select(".y-axis");
 
-yAxis.append("text")
-     .attr("class", "axis-label")
-     .attr("x", -margin.left)
-     .attr("y", margin.top - 10)
-     .attr("fill", "black")
-     .attr("text-anchor", "start")
-     .text(yAxisLabel);
-
-var bars = chartSvg.selectAll(".bar")
-                   .data([])
-                   .enter().append("rect")
-                   .attr("class", "bar")
-                   .attr("x", (d, i) => x(years[i]))
-                   .attr("y", d => y(d))
-                   .attr("width", x.bandwidth())
-                   .attr("height", d => chartHeight - margin.bottom - y(d));
-
-function updateChart(data, yAxisText, yRange) {
-  y.domain(yRange);
+  xAxis.call(d3.axisBottom(x).tickSizeOuter(0))
+       .select(".axis-label")
+       .attr("x", chartWidth / 2)
+       .attr("y", margin.bottom - 10)
+       .attr("fill", "black")
+       .attr("text-anchor", "middle")
+       .text("Year");
 
   yAxis.transition()
        .duration(750)
-       .call(d3.axisLeft(y));
-
-  yAxis.select(".axis-label")
+       .call(d3.axisLeft(y))
+       .select(".axis-label")
        .text(yAxisText);
 
-  bars.data(data)
+  var bars = chartSvg.selectAll(".bar")
+                     .data(data);
+
+  bars.enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", (d, i) => x(years[i]))
+      .attr("width", x.bandwidth())
+      .attr("y", y(0))
+      .attr("height", 0)
+      .merge(bars)
       .transition()
       .duration(750)
       .attr("y", d => y(d))
       .attr("height", d => chartHeight - margin.bottom - y(d));
+
+  bars.exit().remove();
 }
 
 // Button functionality to switch between visualizations
@@ -121,6 +140,7 @@ var currentPage = 0;
 function showPage(index) {
   d3.select("#map-container").classed("active", index === 0 || index === 4 || index === 5);
   d3.select("#chart-container").classed("active", index === 1 || index === 2 || index === 3);
+  d3.select("#county-charts-container").classed("active", index === 5);
   d3.select(".dropdown-container").classed("active", index === 5);
 
   // Update class for map image
@@ -133,11 +153,11 @@ function showPage(index) {
   }
 
   if (index === 1) {
-    updateChart(populationData, "Population", [3500000, 3700000]);
+    updateChart(populationData, "Population", [3500000, 3700000], "chart");
   } else if (index === 2) {
-    updateChart(employmentData, "Employment", [2100000, 2400000]);
+    updateChart(employmentData, "Employment", [2100000, 2400000], "chart");
   } else if (index === 3) {
-    updateChart(incomeData, "Per Capita Income", [60000, 85000]);
+    updateChart(incomeData, "Per Capita Income", [60000, 85000], "chart");
   }
 }
 
