@@ -11,7 +11,7 @@
       flex-direction: column;
       align-items: center;
     }
-    #map-container, #chart-container, #county-chart-container {
+    #map-container, #chart-container {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -23,11 +23,14 @@
       width: 800px;
       height: 600px;
     }
-    #map.us {
-      background-image: url('us-map.png'); /* Image for the first scene */
+    #map.states {
+      background-image: url('ct-states.png'); /* Image for the first page */
     }
     #map.counties {
-      background-image: url('ct-counties.jpg'); /* Image for the fifth scene */
+      background-image: url('ct-counties.jpg'); /* Image for the fifth page */
+    }
+    #map.new-page {
+      background-image: url('ct-counties.jpg'); /* Image for the new page */
     }
     path {
       fill: lightblue;
@@ -65,21 +68,18 @@
   <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
 
   <div id="map-container">
-    <div id="map" class="us"></div> <!-- Default image for the first scene -->
+    <div id="map" class="states"></div> <!-- Default image for the first page -->
+  </div>
+
+  <div class="dropdown-container hidden">
+    <select id="county-dropdown">
+      <option value="">Select a county</option>
+      <!-- Dropdown options will be added here dynamically -->
+    </select>
   </div>
 
   <div id="chart-container" class="hidden">
     <svg id="chart" width="800" height="400"></svg>
-  </div>
-
-  <div id="county-chart-container" class="hidden">
-    <div class="dropdown-container">
-      <select id="county-dropdown">
-        <option value="">Select a county</option>
-        <!-- Dropdown options will be added here dynamically -->
-      </select>
-    </div>
-    <svg id="county-chart" width="800" height="400"></svg>
   </div>
 
   <div class="button-container">
@@ -90,17 +90,14 @@
   <script>
     // Dummy data for counties (for dropdown functionality)
     var countyData = {
-      "Fairfield": {
-        population: [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
-        employment: [150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000],
-        income: [45000, 46000, 47000, 48000, 49000, 50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000]
-      },
-      "Hartford": {
-        population: [250000, 255000, 260000, 265000, 270000, 275000, 280000, 285000, 290000, 295000, 300000, 305000, 310000],
-        employment: [125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000],
-        income: [40000, 41000, 42000, 43000, 44000, 45000, 46000, 47000, 48000, 49000, 50000, 51000, 52000]
-      },
-      // ... other counties
+      "Fairfield": [300000, 305000, 310000, 315000, 320000, 325000, 330000, 335000, 340000, 345000, 350000, 355000, 360000],
+      "Hartford": [250000, 255000, 260000, 265000, 270000, 275000, 280000, 285000, 290000, 295000, 300000, 305000, 310000],
+      "Litchfield": [200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 245000, 250000, 255000, 260000],
+      "Middlesex": [150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000],
+      "New Haven": [350000, 355000, 360000, 365000, 370000, 375000, 380000, 385000, 390000, 395000, 400000, 405000, 410000],
+      "New London": [175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000],
+      "Tolland": [125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000],
+      "Windham": [100000, 105000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000, 155000, 160000]
     };
 
     // Populate the dropdown menu with county names
@@ -120,9 +117,7 @@
 
     function updateCountyChart(countyName) {
       var selectedData = countyData[countyName];
-      updateChart(selectedData.population, countyName + " Population", [100000, 400000], d3.select("#county-chart"));
-      updateChart(selectedData.employment, countyName + " Employment", [100000, 250000], d3.select("#county-chart"));
-      updateChart(selectedData.income, countyName + " Income", [40000, 60000], d3.select("#county-chart"));
+      updateChart(selectedData, countyName + " Population", [100000, 400000]);
     }
 
     // Connecticut Population, Employment, and Per Capita Income Bar Charts
@@ -185,29 +180,16 @@
                        .attr("width", x.bandwidth())
                        .attr("height", d => y(0) - y(d));
 
-    function updateChart(newData, newLabel, yDomain, chartElement = chartSvg) {
+    function updateChart(newData, newLabel, yDomain) {
       y.domain(yDomain).nice();
       yAxis.transition().duration(1000).call(d3.axisLeft(y));
       yAxis.select(".axis-label").text(newLabel);
 
-      var bars = chartElement.selectAll(".bar")
-                              .data(newData);
-
-      bars.exit().remove();
-
-      bars.enter().append("rect")
-           .attr("class", "bar")
-           .attr("x", (d, i) => x(years[i]))
-           .attr("y", y(0))
-           .attr("width", x.bandwidth())
-           .attr("height", 0)
-           .merge(bars)
-           .transition()
-           .duration(1000)
-           .attr("x", (d, i) => x(years[i]))
-           .attr("y", d => y(d))
-           .attr("width", x.bandwidth())
-           .attr("height", d => y(0) - y(d));
+      bars.data(newData)
+          .transition()
+          .duration(1000)
+          .attr("y", d => y(d))
+          .attr("height", d => y(0) - y(d));
     }
 
     // Page navigation
@@ -231,30 +213,28 @@
     function updatePage() {
       var mapDiv = document.getElementById("map");
       var chartContainer = document.getElementById("chart-container");
-      var countyChartContainer = document.getElementById("county-chart-container");
       var dropdownContainer = document.querySelector(".dropdown-container");
-
+      
       mapDiv.className = "";
       chartContainer.classList.add("hidden");
-      countyChartContainer.classList.add("hidden");
+      dropdownContainer.classList.add("hidden");
 
       if (currentPage === 1) {
-        mapDiv.classList.add("us");
+        mapDiv.classList.add("states");
+      } else if (currentPage === 4) {
+        mapDiv.classList.add("new-page");
+      } else if (currentPage === 5) {
+        mapDiv.classList.add("counties");
+        dropdownContainer.classList.remove("hidden");
       } else if (currentPage === 2) {
         chartContainer.classList.remove("hidden");
         updateChart(populationData, "Connecticut Population", [3500000, 3700000]);
       } else if (currentPage === 3) {
         chartContainer.classList.remove("hidden");
         updateChart(employmentData, "Connecticut Employment", [2000000, 2500000]);
-      } else if (currentPage === 4) {
+      } else if (currentPage === 6) {
         chartContainer.classList.remove("hidden");
         updateChart(incomeData, "Connecticut Per Capita Income", [60000, 90000]);
-      } else if (currentPage === 5) {
-        mapDiv.classList.add("counties");
-      } else if (currentPage === 6) {
-        countyChartContainer.classList.remove("hidden");
-        dropdownContainer.classList.remove("hidden");
-        updateCountyChart(dropdown.node().value);
       }
     }
 
