@@ -1,58 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Visualization</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>Connecticut County Map and CT Bar Charts</title>
+  <meta name="description" content="Interactive visualizations using D3.js: a map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022.">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Interactive Data Visualization</h1>
-        <nav>
-            <button id="prev-button">Previous</button>
-            <button id="next-button">Next</button>
-        </nav>
-    </header>
-    <main>
-        <!-- Page Containers -->
-        <div id="map-container" class="page">
-            <div id="map"></div>
-        </div>
-        <div id="chart-container" class="page">
-            <div id="population-chart">
-                <svg id="population-chart-svg"></svg>
-            </div>
-            <div id="employment-chart">
-                <svg id="employment-chart-svg"></svg>
-            </div>
-            <div id="income-chart">
-                <svg id="income-chart-svg"></svg>
-            </div>
-        </div>
-        <div id="county-charts-container" class="page">
-            <div class="dropdown-container">
-                <label for="county-dropdown">Select County:</label>
-                <select id="county-dropdown">
-                    <option value="">--Select County--</option>
-                    <!-- Options will be populated by script -->
-                </select>
-            </div>
-            <div id="county-population">
-                <svg id="county-population-svg"></svg>
-            </div>
-            <div id="county-employment">
-                <svg id="county-employment-svg"></svg>
-            </div>
-            <div id="county-income">
-                <svg id="county-income-svg"></svg>
-            </div>
-        </div>
-        <!-- Additional pages can be added similarly -->
-    </main>
-    <footer>
-        <p>&copy; 2024 Interactive Visualization</p>
-    </footer>
-    <script src="scripts.js"></script>
+  <h1>Connecticut County Map and CT Bar Charts</h1>
+  <p>This page displays an interactive map of Connecticut counties, a bar chart of Ohio's population from 2010 to 2022, a bar chart of Ohio's employment from 2010 to 2022, and a bar chart of Ohio's per capita income from 2010 to 2022 using D3.js. Use the buttons below to switch between the visualizations.</p>
+
+  <div id="map-container" class="visualization active">
+    <div id="map" class="states"></div>
+  </div>
+
+  <div class="dropdown-container hidden">
+    <select id="county-dropdown">
+      <option value="">Select a county</option>
+      <!-- Dropdown options will be added here dynamically -->
+    </select>
+  </div>
+
+  <div id="chart-container" class="visualization">
+    <svg id="chart"></svg>
+  </div>
+
+  <div class="button-container">
+    <button id="prev-button">Prev</button>
+    <button id="next-button">Next</button>
+  </div>
+
+  <div id="county-charts-container" class="visualization">
+    <div id="county-population-chart" class="county-chart"></div>
+    <div id="county-employment-chart" class="county-chart"></div>
+    <div id="county-income-chart" class="county-chart"></div>
+  </div>
+
+  <script src="scripts.js"></script>
 </body>
 </html>
