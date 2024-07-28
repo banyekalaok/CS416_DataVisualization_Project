@@ -140,6 +140,61 @@ function updateChart(data, yAxisText, yRange) {
       .attr("height", d => chartHeight - margin.bottom - y(d));
 }
 
+function updateCountyDetailChart(data, yAxisText, yRange) {
+  y.domain(yRange);
+
+  yAxis.transition()
+       .duration(750)
+       .call(d3.axisLeft(y));
+
+  yAxis.select(".axis-label")
+       .text(yAxisText);
+
+  bars.data(data)
+      .transition()
+      .duration(750)
+      .attr("y", d => y(d))
+      .attr("height", d => chartHeight - margin.bottom - y(d));
+}
+
+function initializeCountyDetailChart(countyName) {
+  var selectedData = countyData[countyName];
+  var chartSvgDetail = d3.select("#county-detail-chart")
+                         .attr("width", chartWidth)
+                         .attr("height", chartHeight);
+
+  var xDetail = d3.scaleBand()
+                  .domain(years)
+                  .range([margin.left, chartWidth - margin.right])
+                  .padding(0.1);
+
+  var yDetail = d3.scaleLinear()
+                  .range([chartHeight - margin.bottom, margin.top]);
+
+  var yAxisDetail = chartSvgDetail.append("g")
+                                  .attr("class", "y-axis")
+                                  .attr("transform", `translate(${margin.left},0)`);
+
+  yAxisDetail.append("text")
+             .attr("class", "axis-label")
+             .attr("x", -margin.left)
+             .attr("y", margin.top - 10)
+             .attr("fill", "black")
+             .attr("text-anchor", "start")
+             .text("Detail");
+
+  var barsDetail = chartSvgDetail.selectAll(".bar")
+                                 .data(selectedData.population)
+                                 .enter().append("rect")
+                                 .attr("class", "bar")
+                                 .attr("x", (d, i) => xDetail(years[i]))
+                                 .attr("y", d => yDetail(d))
+                                 .attr("width", xDetail.bandwidth())
+                                 .attr("height", d => chartHeight - margin.bottom - yDetail(d));
+
+  updateCountyDetailChart(selectedData.population, countyName + " Population", [100000, 400000]);
+}
+
 
 // Button functionality to switch between visualizations
 var pages = ["map", "population", "employment", "income", "counties", "new-page"];
@@ -174,6 +229,8 @@ function showPage(index) {
     d3.select("#county-charts-container").classed("active", true);
     d3.select(".dropdown-container").classed("active", true);
     updateCountyCharts(county);
+    d3.select("#county-detail-container").classed("active", true);
+    initializeCountyDetailChart(county); // Initialize the new chart
   }
 }
 
