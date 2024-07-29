@@ -57,6 +57,7 @@ button:hover {
   display: block;
 }
 
+
 .annotation {
   font-size: 12px;
   fill: black;
@@ -157,6 +158,13 @@ button:hover {
 
 .hidden {
   display: none;
+}
+
+.scene-number {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 /* Style for the SVG chart */
