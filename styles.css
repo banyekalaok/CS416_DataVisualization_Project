@@ -76,7 +76,7 @@ button:hover {
 
 #map {
   width: 70%;
-  height: 600px;
+  height: 700px;
   background-image: url('map-image-URL.jpg'); /* Replace with actual map image URL */
   background-size: cover;
   background-position: center;
@@ -90,7 +90,7 @@ button:hover {
 }
 
 #map.counties {
-  background-image: url('ct-counties.jpg'); 
+  background-image: url('ct-counties.gif'); 
 }
 
 #chart-container {
