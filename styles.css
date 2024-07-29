@@ -75,8 +75,8 @@ button:hover {
 }
 
 #map {
-  width: 70%;
-  height: 700px;
+  width: 85%;
+  height: 600px;
   background-image: url('map-image-URL.jpg'); /* Replace with actual map image URL */
   background-size: cover;
   background-position: center;
@@ -102,7 +102,7 @@ button:hover {
 
 
 #chart {
-  width: 100%;
+  width: 85%;
   height: 400px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -112,14 +112,14 @@ button:hover {
 /* Specific style for the new county detail chart container */
 #county-detail-container {
   justify-content: center; /* Centers the content horizontally */
-  width: 100%;
+  width: 85%;
   max-width: 900px;
   margin: 0 auto;
 }
 
 
 #county-detail-chart {
-  width: 100%;
+  width: 85%;
   height: auto;
 }
 
