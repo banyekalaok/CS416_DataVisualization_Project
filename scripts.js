@@ -318,6 +318,7 @@ function showPage(index) {
   if (index === 0) {
     d3.select("#map-container").classed("active", true);
     d3.select("#map").attr("class", "states");
+    d3.selectAll(".scene-text").text("This website provides Connecticut socio-economic data on both state and county level. Use the buttons below to switch between the webpages. See the map of Connecticut to know the state location in Unites States.");
   } else if (index === 1) {
     d3.select("#chart-container").classed("active", true);
     updateChart(populationData, "Population", [3500000, 3700000]);
