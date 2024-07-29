@@ -340,6 +340,9 @@ function showPage(index) {
       updateCountyCharts(selectedCounty);
     }
   }
+
+  d3.selectAll(".scene-number").text(`Scene ${index + 1}`);
+  
 }
 
 
