@@ -75,7 +75,7 @@ button:hover {
 }
 
 #map {
-  width: 100%;
+  width: 800px;
   height: 500px;
   background-image: url('map-image-URL.jpg'); /* Replace with actual map image URL */
   background-size: cover;
