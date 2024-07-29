@@ -75,13 +75,14 @@ button:hover {
 }
 
 #map {
-  width: 800px;
+  width: 80%;
   height: 500px;
   background-image: url('map-image-URL.jpg'); /* Replace with actual map image URL */
   background-size: cover;
   background-position: center;
   border: 1px solid #ddd;
   border-radius: 5px;
+  margin: 0 auto; /* Centers the map horizontally */
 }
 
 #map.states {
