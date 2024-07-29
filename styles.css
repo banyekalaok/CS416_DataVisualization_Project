@@ -93,7 +93,6 @@ button:hover {
 }
 
 #chart-container {
-  display: flex;           /* Added this to use Flexbox layout */
   justify-content: center; /* Centers the content horizontally */
   align-items: center;     /* Centers the content vertically (if height is constrained) */
   height: 400px;
@@ -111,7 +110,6 @@ button:hover {
 
 /* Specific style for the new county detail chart container */
 #county-detail-container {
-  display: flex;           /* Added this to use Flexbox layout */
   justify-content: center; /* Centers the content horizontally */
   width: 100%;
   max-width: 900px;
@@ -125,7 +123,6 @@ button:hover {
 }
 
 .county-chart {
-  display: flex;           /* Added this to use Flexbox layout */
   justify-content: center; /* Centers the content horizontally */
   gap: 20px;               /* Space between items */
   flex-wrap: wrap;         /* Allows items to wrap to the next line */
