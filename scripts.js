@@ -69,7 +69,7 @@ dropdown.on("change", function() {
 // Connecticut Population, Employment, and Per Capita Income Bar Charts
 var chartWidth = 800;
 var chartHeight = 400;
-var margin = {top: 30, right: 20, bottom: 50, left: 50};
+var margin = {top: 30, right: 20, bottom: 50, left: 70};
 
 var populationData = [3580279, 3594193, 3605259, 3610314, 3614695, 3611995, 3607688, 3607615, 3611318, 3607159, 3597362, 3623355, 3626205];
 var employmentData = [2171940, 2206253, 2223243, 2246505, 2266061, 2288144, 2301331, 2300273, 2314465, 2297910, 2217432, 2289551, 2391946];
