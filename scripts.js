@@ -169,19 +169,33 @@ function updateChart(data, yAxisText, yRange) {
   var annotations = chartSvg.selectAll(".annotation")
                             .data(data);
 
-  annotations.enter().append("text")
-              .attr("class", "annotation")
-              .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
-              .attr("y", d => y(d) - 5) // Adjust as needed to position the annotation
-              .attr("text-anchor", "middle")
-              .text(d => d)
-              .style("font-size", "12px")
-              .style("fill", "black")
-              .merge(annotations)
-              .transition()
-              .duration(750)
-              .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
-              .attr("y", d => y(d) - 5); // Adjust as needed
+  // annotations.enter().append("text")
+  //             .attr("class", "annotation")
+  //             .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+  //             .attr("y", d => y(d) - 5) // Adjust as needed to position the annotation
+  //             .attr("text-anchor", "middle")
+  //             .text(d => d)
+  //             .style("font-size", "12px")
+  //             .style("fill", "black")
+  //             .merge(annotations)
+  //             .transition()
+  //             .duration(750)
+  //             .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+  //             .attr("y", d => y(d) - 5); // Adjust as needed
+
+  // ENTER: Append new text elements for new data points
+  annotations.enter()
+             .append("text")
+             .attr("class", "annotation")
+             .attr("text-anchor", "middle")
+             .style("font-size", "12px")
+             .style("fill", "black")
+             .merge(annotations) // MERGE: Update both new and existing elements
+             .transition()
+             .duration(750)
+             .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+             .attr("y", d => y(d) - 5) // Ensure labels adjust dynamically
+             .text(d => d.toLocaleString()); // Format numbers properly
 
   annotations.exit().remove();
 }
