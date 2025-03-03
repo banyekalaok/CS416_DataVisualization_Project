@@ -170,16 +170,16 @@ function updateChart(data, yAxisText, yRange) {
   //                           .data(data);
 
   // Add annotations (numbers on bars)
-  var annotations = chartSvg.selectAll(".annotation")
-                            .data(data)
-                            .join("text") // Ensures proper update
-                            .attr("class", "annotation")
-                            .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
-                            .attr("y", d => y(d) - 10) // Adjust position
-                            .attr("text-anchor", "middle")
-                            .text(d => d)
-                            .style("font-size", "12px")
-                            .style("fill", "black");
+  // var annotations = chartSvg.selectAll(".annotation")
+  //                           .data(data)
+  //                           .join("text") // Ensures proper update
+  //                           .attr("class", "annotation")
+  //                           .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+  //                           .attr("y", d => y(d) - 10) // Adjust position
+  //                           .attr("text-anchor", "middle")
+  //                           .text(d => d)
+  //                           .style("font-size", "12px")
+  //                           .style("fill", "black");
 
   // annotations.enter().append("text")
   //             .attr("class", "annotation")
@@ -195,7 +195,20 @@ function updateChart(data, yAxisText, yRange) {
   //             .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
   //             .attr("y", d => y(d) - 5); // Adjust as needed
 
-  annotations.exit().remove();
+  // annotations.exit().remove();
+  chartSvg.selectAll(".annotation").remove(); // Remove old labels
+
+  chartSvg.selectAll(".annotation")
+          .data(data)
+          .enter()
+          .append("text")
+          .attr("class", "annotation")
+        .attr("text-anchor", "middle")
+        .attr("x", (d, i) => x(years[i]) + x.bandwidth() / 2)
+        .attr("y", d => y(d) - 5)
+        .text(d => d)
+        .style("font-size", "12px")
+        .style("fill", "black");
 }
 
 function updateCountyCharts(county) {
