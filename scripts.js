@@ -396,4 +396,21 @@ document.getElementById("prevButton").addEventListener("click", function() {
     updateCountyCharts(selectedCounty);  // Ensure the chart updates
 });
 
+// Ensure buttons update the chart correctly after switching scenes
+document.getElementById("populationButton").addEventListener("click", function() {
+    var selectedCounty = dropdown.node().value;  // Get selected county
+    updateChart(countyData[selectedCounty].population, selectedCounty + " Population", [100000, 400000]);
+});
+
+document.getElementById("employmentButton").addEventListener("click", function() {
+    var selectedCounty = dropdown.node().value;  // Get selected county
+    updateChart(countyData[selectedCounty].employment, selectedCounty + " Employment", [100000, 300000]);
+});
+
+document.getElementById("incomeButton").addEventListener("click", function() {
+    var selectedCounty = dropdown.node().value;  // Get selected county
+    updateChart(countyData[selectedCounty].income, selectedCounty + " Income", [50000, 70000]);
+});
+
+
 
