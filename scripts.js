@@ -370,3 +370,17 @@ d3.select("#prev-button").on("click", function() {
 });
 
 showPage(currentPage); // Show the initial page
+
+document.getElementById("nextButton").addEventListener("click", function() {
+    currentScene++;
+    var selectedCounty = dropdown.node().value;  // Get selected county
+    updateCountyCharts(selectedCounty);  // Ensure the chart updates
+});
+
+document.getElementById("prevButton").addEventListener("click", function() {
+    currentScene--;
+    var selectedCounty = dropdown.node().value;  // Get selected county
+    updateCountyCharts(selectedCounty);  // Ensure the chart updates
+});
+
+
