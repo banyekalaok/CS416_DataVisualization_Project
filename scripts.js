@@ -396,19 +396,24 @@ document.getElementById("prevButton").addEventListener("click", function() {
     updateCountyCharts(selectedCounty);  // Ensure the chart updates
 });
 
-// Ensure buttons update the chart correctly after switching scenes
+// Function to get the latest selected county
+function getSelectedCounty() {
+    return dropdown.node().value;  // Get current county from dropdown
+}
+
+// Ensure buttons update the chart correctly
 document.getElementById("populationButton").addEventListener("click", function() {
-    var selectedCounty = dropdown.node().value;  // Get selected county
+    var selectedCounty = getSelectedCounty();  
     updateChart(countyData[selectedCounty].population, selectedCounty + " Population", [100000, 400000]);
 });
 
 document.getElementById("employmentButton").addEventListener("click", function() {
-    var selectedCounty = dropdown.node().value;  // Get selected county
+    var selectedCounty = getSelectedCounty();  
     updateChart(countyData[selectedCounty].employment, selectedCounty + " Employment", [100000, 300000]);
 });
 
 document.getElementById("incomeButton").addEventListener("click", function() {
-    var selectedCounty = dropdown.node().value;  // Get selected county
+    var selectedCounty = getSelectedCounty();  
     updateChart(countyData[selectedCounty].income, selectedCounty + " Income", [50000, 70000]);
 });
 
